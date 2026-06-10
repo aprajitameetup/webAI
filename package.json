@@ -1,0 +1,17 @@
+{
+  "name": "webai-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "pnpm --filter @webai/hub dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  },
+  "packageManager": "pnpm@11.5.2",
+  "pnpm": {
+    "approvedBuilds": ["esbuild"]
+  }
+}

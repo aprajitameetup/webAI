@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The New Web AI Stack · Learning Hub</title>
+<style>
+  :root{
+    --bg:#0a0e14;--surface:#11161f;--surface2:#1a212e;--border:#2a3342;
+    --accent:#58a6ff;--accent2:#3fb950;--accent3:#f78166;--accent4:#d2a8ff;
+    --yellow:#e3b341;--orange:#f0883e;--cyan:#39d0d8;
+    --text:#e6edf3;--muted:#8b949e;--dim:#4a5568;
+    --r:8px;--r2:14px;--t:.2s cubic-bezier(.4,0,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+  /* TOP BAR */
+  .topbar{display:flex;align-items:center;gap:14px;padding:0 20px;height:54px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+  .brand{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;letter-spacing:.2px;white-space:nowrap}
+  .brand .logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent4));display:flex;align-items:center;justify-content:center;font-size:14px}
+  .brand small{font-weight:500;color:var(--muted);font-size:11px}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .live-pill{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:5px 12px}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.35)}}
+  .progress-mini{font-size:11px;color:var(--muted);font-weight:600}
+
+  .layout{flex:1;display:flex;overflow:hidden;min-height:0}
+
+  /* SIDEBAR NAV */
+  .nav{width:248px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:12px 10px}
+  .nav-group-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--dim);padding:14px 10px 6px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:var(--t);border:1px solid transparent}
+  .nav-item:hover{background:var(--surface2);color:var(--text)}
+  .nav-item.active{background:var(--surface2);color:var(--text);border-color:var(--border)}
+  .nav-item .ico{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:var(--bg)}
+  .nav-item.active .ico{background:linear-gradient(135deg,var(--accent),var(--accent4))}
+  .nav-item .chk{margin-left:auto;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--dim);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent;transition:var(--t)}
+  .nav-item .chk.done{background:var(--accent2);border-color:var(--accent2);color:#06140a}
+
+  /* CONTENT */
+  .content{flex:1;overflow-y:auto;padding:32px 44px}
+  .page{display:none;max-width:920px;margin:0 auto;animation:fade .25s ease}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .eyebrow::before{content:'';width:18px;height:2px;background:var(--accent)}
+  h1{font-size:34px;font-weight:900;line-height:1.15;letter-spacing:-.8px;margin-bottom:12px;background:linear-gradient(135deg,#e6edf3 35%,#79c0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  h2{font-size:22px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+  h3{font-size:15px;font-weight:700;margin:18px 0 8px;color:var(--text)}
+  .lead{font-size:16px;color:var(--muted);line-height:1.6;margin-bottom:8px;max-width:680px}
+  p{font-size:14px;line-height:1.7;color:#c2ccd6;margin-bottom:12px}
+  p strong,li strong{color:var(--text)}
+  ul{margin:0 0 14px 20px}li{font-size:14px;line-height:1.7;color:#c2ccd6;margin-bottom:5px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:20px 22px;margin-bottom:16px}
+  .card.tinted{background:linear-gradient(135deg,rgba(88,166,255,.06),rgba(210,168,255,.06));border-color:rgba(88,166,255,.2)}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
+  .pill.must{background:rgba(247,129,102,.14);color:var(--accent3)}
+  .pill.new{background:rgba(210,168,255,.14);color:var(--accent4)}
+  .pill.ship{background:rgba(63,185,80,.14);color:var(--accent2)}
+  .pill.exp{background:rgba(227,179,65,.14);color:var(--yellow)}
+
+  .takeaway{border-left:3px solid var(--accent2);background:rgba(63,185,80,.06);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;margin:16px 0;font-size:14px;line-height:1.6}
+  .takeaway b{color:var(--accent2)}
+  .warn{border-left:3px solid var(--yellow);background:rgba(227,179,65,.06);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;margin:16px 0;font-size:14px;line-height:1.6}
+  .warn b{color:var(--yellow)}
+
+  pre{background:#070a0f;border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;overflow-x:auto;margin:10px 0 16px;font-size:12.5px;line-height:1.6;font-family:'SF Mono','Fira Code',Consolas,monospace}
+  code{font-family:'SF Mono','Fira Code',Consolas,monospace;font-size:.9em}
+  pre code{color:#c9d1d9}
+  .tok-key{color:#ff7b72}.tok-fn{color:#d2a8ff}.tok-str{color:#a5d6ff}.tok-com{color:#6e7681;font-style:italic}.tok-num{color:#79c0ff}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+  /* CAPABILITY DASHBOARD */
+  .cap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:16px 0}
+  .cap{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+  .cap .status{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-weight:700}
+  .cap .status.yes{background:rgba(63,185,80,.18);color:var(--accent2)}
+  .cap .status.no{background:rgba(247,129,102,.16);color:var(--accent3)}
+  .cap .status.partial{background:rgba(227,179,65,.16);color:var(--yellow)}
+  .cap .info{min-width:0}
+  .cap .info .name{font-size:13px;font-weight:600}
+  .cap .info .detail{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* DEMO BLOCKS */
+  .demo{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin:14px 0}
+  .demo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .demo-head .title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .btn{background:var(--accent);color:#04101f;border:none;border-radius:var(--r);padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:var(--t)}
+  .btn:hover{background:#79b8ff}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.ghost{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+  .btn.ghost:hover{background:var(--border)}
+  .demo-out{background:#070a0f;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.6;color:var(--accent2);min-height:40px;white-space:pre-wrap;word-break:break-word;max-height:240px;overflow-y:auto}
+  .demo-out .err{color:var(--accent3)}
+  .demo-out .muted{color:var(--muted)}
+
+  /* TIMELINE / PLAN */
+  .day{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:18px 22px;margin-bottom:14px}
+  .day-h{font-size:16px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .day-sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .task{display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:13px;color:#c2ccd6;line-height:1.5}
+  .task .tbox{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--dim);flex-shrink:0;margin-top:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent;transition:var(--t)}
+  .task .tbox.done{background:var(--accent2);border-color:var(--accent2);color:#06140a}
+  .task.done span{text-decoration:line-through;color:var(--dim)}
+
+  .res{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;transition:var(--t)}
+  .res:hover{border-color:var(--accent)}
+  .res .rico{width:30px;height:30px;border-radius:7px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .res .rbody{min-width:0}
+  .res .rt{font-size:13px;font-weight:600}
+  .res .rd{font-size:11.5px;color:var(--muted)}
+
+  .stacklayer{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:var(--r);margin-bottom:7px;border:1px solid var(--border)}
+  .stacklayer .num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;background:var(--surface2);color:var(--accent)}
+  .stacklayer .ltext{flex:1}
+  .stacklayer .ltext b{font-size:14px}
+  .stacklayer .ltext span{font-size:12px;color:var(--muted)}
+
+  ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--dim)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="logo">⚡</div>
+    <div>The New Web AI Stack<br/><small>React Delhi · Learning Hub</small></div>
+  </div>
+  <div class="topbar-right">
+    <div class="progress-mini" id="progressMini">0 / 11 explored</div>
+    <div class="live-pill"><span class="live-dot"></span> Live in your browser</div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="nav" id="nav"></nav>
+  <main class="content" id="content"></main>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  CONTENT MODEL — each section is data; rendered into pages + nav
+// ════════════════════════════════════════════════════════════════
+const SECTIONS = [
+  {
+    id:'overview', icon:'🗺️', group:'Start here', title:'Overview',
+    html:`
+      <div class="eyebrow">The big picture</div>
+      <h1>The browser is becoming<br/>a full AI runtime.</h1>
+      <p class="lead">Five years ago, "AI in a web app" meant one thing: call a server API. Today the browser itself can run models, talk over real-time transports, store gigabytes of weights, and tap on-device accelerators. This hub walks every layer of that new stack — with live demos that run right here, in <em>your</em> browser.</p>
+
+      <h2>The stack, as layers</h2>
+      <div class="stacklayer"><div class="num">1</div><div class="ltext"><b>Compute</b> &nbsp;<span>WebGPU · WebAssembly · WebNN — run the math</span></div></div>
+      <div class="stacklayer"><div class="num">2</div><div class="ltext"><b>Runtimes</b> &nbsp;<span>Transformers.js · WebLLM · ONNX Runtime Web · TF.js</span></div></div>
+      <div class="stacklayer"><div class="num">3</div><div class="ltext"><b>Built-in AI</b> &nbsp;<span>Prompt API · Gemini Nano on-device</span></div></div>
+      <div class="stacklayer"><div class="num">4</div><div class="ltext"><b>Transport</b> &nbsp;<span>WebTransport · SSE · WebRTC — tokens & data in/out</span></div></div>
+      <div class="stacklayer"><div class="num">5</div><div class="ltext"><b>Storage</b> &nbsp;<span>OPFS · Cache API · IndexedDB — hold the weights</span></div></div>
+      <div class="stacklayer"><div class="num">6</div><div class="ltext"><b>Concurrency</b> &nbsp;<span>Web Workers · SharedArrayBuffer · COOP/COEP</span></div></div>
+      <div class="stacklayer"><div class="num">7</div><div class="ltext"><b>Multimodal I/O</b> &nbsp;<span>WebCodecs · Web Audio — voice & vision</span></div></div>
+
+      <div class="takeaway"><b>Talk thesis:</b> "Compute + Models + Transport + Storage + I/O have all matured at once — so the browser can now be the AI runtime, not just the AI client."</div>
+
+      <h2>How to use this over 3 days</h2>
+      <p>Each section has: <strong>what it is</strong>, <strong>why it matters</strong>, a <strong>code snippet</strong>, and where possible a <strong>live demo</strong>. Tick sections off in the sidebar as you go. The <strong>Live Capabilities</strong> tab shows what your current browser supports — start there to see the stack is real.</p>
+    `
+  },
+  {
+    id:'capabilities', icon:'🔬', group:'Start here', title:'Live Capabilities', live:'caps',
+    html:`
+      <div class="eyebrow">Feature detection</div>
+      <h1>What can <em>your</em> browser do?</h1>
+      <p class="lead">This is real feature detection, run live. Green = available right now. This is the fastest way to internalise "what's shipping vs experimental." Try it in Chrome Canary too — you'll light up more.</p>
+      <div class="cap-grid" id="capGrid"></div>
+      <div class="warn"><b>Note:</b> some APIs (SharedArrayBuffer, full WebGPU threads) require <b>cross-origin isolation</b> (COOP/COEP headers). Opening this file via <code>file://</code> or a plain static server limits a few of them — that's expected, and itself a lesson (see the Concurrency tab).</div>
+    `
+  },
+  {
+    id:'compute', icon:'🧮', group:'The Stack', title:'Compute',
+    html:`
+      <div class="eyebrow">Layer 1 · Run the math</div>
+      <h1>Compute: WebGPU, Wasm, WebNN</h1>
+      <p class="lead">Before a model can run in the browser, you need a way to do billions of multiply-adds fast. Three technologies, three trade-offs.</p>
+
+      <h2>🎮 WebGPU <span class="pill ship">Shipping</span></h2>
+      <p>The modern GPU API for the web — successor to WebGL, but built for <strong>general compute</strong>, not just graphics. You write <strong>compute shaders</strong> in WGSL and dispatch them across thousands of GPU threads. This is what powers in-browser LLMs (WebLLM) and fast inference.</p>
+      <pre><code><span class="tok-key">const</span> adapter = <span class="tok-key">await</span> navigator.gpu.<span class="tok-fn">requestAdapter</span>();
+<span class="tok-key">const</span> device  = <span class="tok-key">await</span> adapter.<span class="tok-fn">requestDevice</span>();
+<span class="tok-com">// upload buffers, write a WGSL compute shader, dispatch, read back</span></code></pre>
+      <div class="demo">
+        <div class="demo-head"><div class="title">🎮 Live: WebGPU compute shader</div><button class="btn" id="btn-webgpu">Run a + b on the GPU</button></div>
+        <div class="demo-out" id="out-webgpu">Click to request a GPU device and run a tiny element-wise add shader.</div>
+      </div>
+
+      <h2>🧩 WebAssembly <span class="pill ship">Shipping</span></h2>
+      <p>Near-native CPU performance in the browser. The <strong>fallback path</strong> when WebGPU isn't available, and the foundation for ONNX Runtime Web and llama.cpp ports. Key extensions for AI: <strong>SIMD</strong> (vectorised math), <strong>threads</strong> (needs SharedArrayBuffer), and <strong>Wasm GC</strong>.</p>
+      <div class="takeaway"><b>Mental model:</b> WebGPU = the fast lane (GPU), Wasm = the reliable lane (CPU). Good runtimes try WebGPU and fall back to Wasm automatically.</div>
+
+      <h2>🧠 WebNN — Web Neural Network API <span class="pill new">The new one</span></h2>
+      <p>This is the piece most "web AI" talks miss. WebNN is a <strong>W3C standard built specifically for ML inference</strong>. Instead of you hand-writing compute shaders, you describe a <em>graph</em> of neural-network ops and the browser routes it to the OS's native accelerator — <strong>DirectML</strong> (Windows), <strong>Core ML</strong> (Apple), <strong>NNAPI</strong> (Android), even NPUs.</p>
+      <ul>
+        <li><strong>WebGPU</strong> = low-level, you build the kernels.</li>
+        <li><strong>WebNN</strong> = high-level, you describe the model and the OS picks the best hardware (including dedicated AI chips / NPUs).</li>
+      </ul>
+      <pre><code><span class="tok-key">const</span> context = <span class="tok-key">await</span> navigator.ml.<span class="tok-fn">createContext</span>({ deviceType: <span class="tok-str">'gpu'</span> });
+<span class="tok-key">const</span> builder = <span class="tok-key">new</span> <span class="tok-fn">MLGraphBuilder</span>(context);
+<span class="tok-com">// describe ops: conv2d, matmul, relu… then build() and compute()</span></code></pre>
+      <div class="warn"><b>Status:</b> WebNN is still behind flags in most browsers (Chrome/Edge origin trials). Worth knowing deeply because it's where the platform is heading — and it's a strong "you haven't heard of this yet" moment for your talk.</div>
+    `
+  },
+  {
+    id:'runtimes', icon:'📦', group:'The Stack', title:'Models & Runtimes',
+    html:`
+      <div class="eyebrow">Layer 2 · The frameworks you actually use</div>
+      <h1>Models & Runtimes</h1>
+      <p class="lead">You rarely touch WebGPU directly — you use a runtime that sits on top of it and falls back to Wasm. These are the libraries to know.</p>
+
+      <h2>🤗 Transformers.js <span class="pill ship">Popular</span></h2>
+      <p>Hugging Face's library to run transformer models in the browser with a Python-like API. Pulls ONNX models, runs on WebGPU/Wasm. Great for embeddings, classification, ASR, small LLMs.</p>
+      <pre><code><span class="tok-key">import</span> { pipeline } <span class="tok-key">from</span> <span class="tok-str">'@huggingface/transformers'</span>;
+<span class="tok-key">const</span> pipe = <span class="tok-key">await</span> <span class="tok-fn">pipeline</span>(<span class="tok-str">'sentiment-analysis'</span>);
+<span class="tok-key">const</span> out  = <span class="tok-key">await</span> <span class="tok-fn">pipe</span>(<span class="tok-str">'Web AI is incredible'</span>); <span class="tok-com">// [{label:'POSITIVE', score:.99}]</span></code></pre>
+
+      <h2>🦙 WebLLM <span class="pill new">The showstopper</span></h2>
+      <p>By MLC — runs <strong>full LLMs entirely in-browser</strong> over WebGPU (Llama 3, Phi-3, Mistral, Qwen, Gemma). Downloads a quantized model once (cached via OPFS), then inference is fully local — works offline, nothing leaves the device. This is your "pull the wifi and it still answers" demo.</p>
+      <pre><code><span class="tok-key">import</span> { CreateMLCEngine } <span class="tok-key">from</span> <span class="tok-str">'@mlc-ai/web-llm'</span>;
+<span class="tok-key">const</span> engine = <span class="tok-key">await</span> <span class="tok-fn">CreateMLCEngine</span>(<span class="tok-str">'Llama-3.2-1B-Instruct-q4f32_1-MLC'</span>);
+<span class="tok-key">const</span> reply = <span class="tok-key">await</span> engine.chat.completions.<span class="tok-fn">create</span>({ messages, stream:<span class="tok-key">true</span> });</code></pre>
+
+      <h2>The rest worth naming</h2>
+      <div class="grid2">
+        <div class="card"><h3>⚙️ ONNX Runtime Web</h3><p style="margin:0">Microsoft's runtime. Runs any ONNX model on WebGPU/Wasm. The engine under many other libs.</p></div>
+        <div class="card"><h3>📊 TensorFlow.js</h3><p style="margin:0">The veteran. Big model zoo, WebGL/WebGPU backends, good for vision.</p></div>
+        <div class="card"><h3>🎯 MediaPipe</h3><p style="margin:0">Google's task runtime — face/hand/pose, segmentation, on-device LLM tasks. Drop-in "solutions."</p></div>
+        <div class="card"><h3>🐍 Pyodide</h3><p style="margin:0">CPython compiled to Wasm — run numpy/scikit-learn in the browser. Niche but mind-bending.</p></div>
+      </div>
+      <div class="takeaway"><b>Pick by job:</b> embeddings/NLP → Transformers.js · chat LLM offline → WebLLM · arbitrary ONNX → ONNX Runtime Web · vision tasks → MediaPipe.</div>
+    `
+  },
+  {
+    id:'builtin', icon:'✨', group:'The Stack', title:'Built-in AI', live:'builtin',
+    html:`
+      <div class="eyebrow">Layer 3 · The browser ships a model</div>
+      <h1>Built-in AI & the Prompt API</h1>
+      <p class="lead">The newest, most "wow" piece. Chrome ships <strong>Gemini Nano on-device</strong> and exposes it through JS APIs — no download in your app, no server, no API key. The browser <em>is</em> the model.</p>
+
+      <h2>The APIs</h2>
+      <ul>
+        <li><strong>Prompt API</strong> (<code>LanguageModel</code>) — general chat/completion against the built-in model.</li>
+        <li><strong>Task APIs</strong> — <code>Summarizer</code>, <code>Writer</code>, <code>Rewriter</code>, <code>Translator</code>, <code>LanguageDetector</code>. Purpose-built, higher quality for their task.</li>
+      </ul>
+      <pre><code><span class="tok-com">// availability + create a session (API surface evolves — check current docs)</span>
+<span class="tok-key">const</span> avail = <span class="tok-key">await</span> LanguageModel.<span class="tok-fn">availability</span>();
+<span class="tok-key">const</span> session = <span class="tok-key">await</span> LanguageModel.<span class="tok-fn">create</span>();
+<span class="tok-key">const</span> answer = <span class="tok-key">await</span> session.<span class="tok-fn">prompt</span>(<span class="tok-str">'Explain WebGPU in one line'</span>);
+<span class="tok-com">// streaming:</span>
+<span class="tok-key">for await</span> (<span class="tok-key">const</span> chunk <span class="tok-key">of</span> session.<span class="tok-fn">promptStreaming</span>(text)) { … }</code></pre>
+
+      <div class="demo">
+        <div class="demo-head"><div class="title">✨ Live: is Built-in AI available here?</div><button class="btn" id="btn-builtin">Detect Prompt API</button></div>
+        <div class="demo-out" id="out-builtin">Click to detect the on-device model. (Needs Chrome with the feature enabled — chrome://flags → "Prompt API for Gemini Nano".)</div>
+      </div>
+
+      <div class="takeaway"><b>Why it matters:</b> zero-cost, private, offline, instant. The killer pattern is <b>hybrid</b> — try the on-device model first, escalate to a server model only when the task is too big. See the Patterns tab.</div>
+      <div class="warn"><b>Moving target:</b> the exact API names changed during origin trials (<code>window.ai</code> → <code>LanguageModel</code> / <code>self.ai</code>). Always check the current Chrome docs the day of your talk.</div>
+    `
+  },
+  {
+    id:'transport', icon:'🔌', group:'The Stack', title:'Transport', live:'transport',
+    html:`
+      <div class="eyebrow">Layer 4 · Tokens & data in/out</div>
+      <h1>Transport: SSE, WebTransport, WebRTC</h1>
+      <p class="lead">When the model runs on a server, how the tokens reach the browser defines the experience. Know what ships today vs what's next.</p>
+
+      <h2>📡 Server-Sent Events (SSE) <span class="pill ship">What ships today</span></h2>
+      <p>The unglamorous workhorse. <strong>OpenAI and Anthropic stream tokens over SSE.</strong> One-way server→client, plain HTTP, auto-reconnect. If you build an LLM app this year, you'll use this (often via <code>fetch</code> + <code>ReadableStream</code> rather than <code>EventSource</code>, to send POST bodies + headers).</p>
+      <pre><code><span class="tok-key">const</span> res = <span class="tok-key">await</span> <span class="tok-fn">fetch</span>(url, { method:<span class="tok-str">'POST'</span>, body });
+<span class="tok-key">const</span> reader = res.body.<span class="tok-fn">getReader</span>();
+<span class="tok-key">while</span> (<span class="tok-key">true</span>) { <span class="tok-key">const</span> {done,value} = <span class="tok-key">await</span> reader.<span class="tok-fn">read</span>(); <span class="tok-key">if</span>(done) <span class="tok-key">break</span>; <span class="tok-com">/* decode + append */</span> }</code></pre>
+      <div class="demo">
+        <div class="demo-head"><div class="title">📡 Live: token-streaming UX (simulated)</div><button class="btn" id="btn-sse">Stream a response</button></div>
+        <div class="demo-out" id="out-sse">This simulates the SSE streaming pattern so you can feel why streaming UX matters.</div>
+      </div>
+
+      <h2>🚀 WebTransport <span class="pill new">Where it's going</span></h2>
+      <p>Built on <strong>HTTP/3 + QUIC</strong>. Bidirectional, multiplexed streams + unreliable datagrams, lower latency than WebSockets, no head-of-line blocking. Great for agentic / bidirectional / multi-stream AI. Not yet the default, but the future of low-latency web transport.</p>
+
+      <h2>🎙️ WebRTC <span class="pill ship">Voice AI</span></h2>
+      <p>Real-time peer audio/video + data channels. The backbone of <strong>realtime voice assistants</strong> (e.g. OpenAI Realtime). Sub-100ms audio in/out for speech-to-speech models.</p>
+      <div class="takeaway"><b>For the talk:</b> be honest — "SSE is what you'll ship today; WebTransport is what you'll ship in two years; WebRTC is how you do voice now."</div>
+    `
+  },
+  {
+    id:'storage', icon:'💾', group:'The Stack', title:'Storage', live:'storage',
+    html:`
+      <div class="eyebrow">Layer 5 · Hold the weights</div>
+      <h1>Storage: OPFS, Cache, IndexedDB</h1>
+      <p class="lead">In-browser models are 100 MB – 2 GB+. Re-downloading on every page load is a non-starter. This is the unsexy layer that makes client-side AI actually usable.</p>
+
+      <h2>🗄️ Origin Private File System (OPFS) <span class="pill new">Best for weights</span></h2>
+      <p>A private, high-performance, origin-scoped file system. Synchronous access from workers, ideal for big binary blobs like model weights. This is where WebLLM/Transformers.js cache models.</p>
+      <pre><code><span class="tok-key">const</span> root = <span class="tok-key">await</span> navigator.storage.<span class="tok-fn">getDirectory</span>();
+<span class="tok-key">const</span> fh = <span class="tok-key">await</span> root.<span class="tok-fn">getFileHandle</span>(<span class="tok-str">'model.bin'</span>, { create:<span class="tok-key">true</span> });
+<span class="tok-key">const</span> w = <span class="tok-key">await</span> fh.<span class="tok-fn">createWritable</span>(); <span class="tok-key">await</span> w.<span class="tok-fn">write</span>(blob); <span class="tok-key">await</span> w.<span class="tok-fn">close</span>();</code></pre>
+      <div class="demo">
+        <div class="demo-head"><div class="title">💾 Live: write & read a file in OPFS</div><button class="btn" id="btn-opfs">Round-trip a file</button></div>
+        <div class="demo-out" id="out-opfs">Writes a string to OPFS, reads it back, and reports your storage quota.</div>
+      </div>
+
+      <div class="grid2">
+        <div class="card"><h3>📦 Cache API</h3><p style="margin:0">Request/response caching (Service Workers). Good for caching model shards fetched over HTTP, enables offline.</p></div>
+        <div class="card"><h3>🗃️ IndexedDB</h3><p style="margin:0">Structured key-value store. Older, async, fine for metadata/embeddings; OPFS is better for big binaries.</p></div>
+      </div>
+      <div class="takeaway"><b>Rule of thumb:</b> big binary weights → OPFS · HTTP-fetched shards / offline → Cache API · structured data & vectors → IndexedDB.</div>
+    `
+  },
+  {
+    id:'concurrency', icon:'🧵', group:'The Stack', title:'Concurrency', live:'concurrency',
+    html:`
+      <div class="eyebrow">Layer 6 · Don't freeze the tab</div>
+      <h1>Concurrency: Workers, SAB, COOP/COEP</h1>
+      <p class="lead">Inference is heavy. Run it on the main thread and the UI locks up. This layer is how you keep things smooth — and the source of the most common "why doesn't it work" gotchas.</p>
+
+      <h2>👷 Web Workers</h2>
+      <p>Run inference on a background thread; post messages back to the UI. Every serious in-browser AI lib runs the model in a worker (or <strong>OffscreenCanvas</strong> for rendering).</p>
+      <div class="demo">
+        <div class="demo-head"><div class="title">🧵 Live: offload work to a Web Worker</div><button class="btn" id="btn-worker">Compute on a worker</button></div>
+        <div class="demo-out" id="out-worker">Spins up an inline worker, computes a heavy loop off the main thread, returns the result — UI stays responsive.</div>
+      </div>
+
+      <h2>🔗 SharedArrayBuffer + cross-origin isolation <span class="pill exp">The gotcha</span></h2>
+      <p>Wasm threads and some WebGPU paths need <code>SharedArrayBuffer</code>, which is gated behind <strong>cross-origin isolation</strong>. You must serve these headers:</p>
+      <pre><code>Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp</code></pre>
+      <p>Then check <code>crossOriginIsolated === true</code>. Miss this and multi-threaded Wasm silently falls back to single-thread (slow) — a classic "works in the demo, slow in prod" trap.</p>
+      <div class="warn"><b>You'll hit this:</b> opening this very file without those headers means <code>SharedArrayBuffer</code> may be unavailable — check the Live Capabilities tab to see your current state.</div>
+    `
+  },
+  {
+    id:'multimodal', icon:'🎬', group:'The Stack', title:'Multimodal I/O', live:'multimodal',
+    html:`
+      <div class="eyebrow">Layer 7 · Voice & vision</div>
+      <h1>Multimodal I/O: WebCodecs & Web Audio</h1>
+      <p class="lead">Text is the easy case. Voice and vision AI need efficient ways to capture, decode, and feed media to models in real time.</p>
+
+      <h2>🎞️ WebCodecs</h2>
+      <p>Low-level access to encode/decode video & audio frames. Lets you pull raw frames out of a camera/video stream to feed a vision model without the overhead of <code>&lt;video&gt;</code> + canvas hacks. The backbone of in-browser video AI.</p>
+
+      <h2>🔊 Web Audio API + AudioWorklet</h2>
+      <p>Capture mic audio, process it in a real-time audio thread (<strong>AudioWorklet</strong>), and pipe to an ASR model — or play TTS output. The input/output rig for voice assistants.</p>
+      <pre><code><span class="tok-key">const</span> ctx = <span class="tok-key">new</span> <span class="tok-fn">AudioContext</span>();
+<span class="tok-key">await</span> ctx.audioWorklet.<span class="tok-fn">addModule</span>(<span class="tok-str">'processor.js'</span>); <span class="tok-com">// runs on the audio thread</span></code></pre>
+      <div class="demo">
+        <div class="demo-head"><div class="title">🔊 Live: Web Audio (play a tone)</div><button class="btn" id="btn-audio">Play 440 Hz</button></div>
+        <div class="demo-out" id="out-audio">Click (a user gesture is required) to spin up an AudioContext and play a short tone.</div>
+      </div>
+      <div class="takeaway"><b>Voice AI pipeline:</b> mic → Web Audio/AudioWorklet → ASR (Transformers.js Whisper) → LLM → TTS → Web Audio out. Every box is a browser API on this list.</div>
+    `
+  },
+  {
+    id:'rag', icon:'🔎', group:'The Stack', title:'In-browser RAG',
+    html:`
+      <div class="eyebrow">Bonus · The sleeper feature</div>
+      <h1>RAG, entirely in the browser</h1>
+      <p class="lead">You can do retrieval-augmented generation with <strong>zero server</strong> — embeddings, a vector store, and an LLM all client-side. Great "I didn't know that was possible" moment.</p>
+      <ul>
+        <li><strong>Embeddings</strong> — Transformers.js (<code>feature-extraction</code> pipeline) turns text into vectors locally.</li>
+        <li><strong>Vector store</strong> — Wasm SQLite (<code>wa-sqlite</code>, <code>sqlite-vec</code>), <code>pglite</code> (Postgres in Wasm), or lightweight libs like <code>voy</code> (Rust→Wasm HNSW).</li>
+        <li><strong>Generation</strong> — WebLLM or Built-in AI with the retrieved context.</li>
+      </ul>
+      <pre><code><span class="tok-com">// 1) embed query locally  2) cosine-search local vectors  3) prompt local LLM</span>
+<span class="tok-key">const</span> embed = <span class="tok-key">await</span> <span class="tok-fn">pipeline</span>(<span class="tok-str">'feature-extraction'</span>, <span class="tok-str">'Xenova/all-MiniLM-L6-v2'</span>);
+<span class="tok-key">const</span> qVec  = <span class="tok-key">await</span> <span class="tok-fn">embed</span>(query, { pooling:<span class="tok-str">'mean'</span>, normalize:<span class="tok-key">true</span> });</code></pre>
+      <div class="takeaway"><b>Why it's powerful:</b> private (documents never leave the device), offline, free. Perfect for personal-knowledge or sensitive-data apps.</div>
+    `
+  },
+  {
+    id:'patterns', icon:'🏛️', group:'Wrap up', title:'Patterns & Architecture',
+    html:`
+      <div class="eyebrow">Putting it together</div>
+      <h1>Architecture patterns</h1>
+      <h2>🔀 Hybrid (on-device → escalate)</h2>
+      <p>The defining pattern of the new stack. Try the <strong>on-device</strong> model (Built-in AI / WebLLM) for speed, privacy, and zero cost. Escalate to a <strong>server</strong> model only when the task exceeds local capability. Decide by task size, confidence, or capability detection.</p>
+      <h2>🧩 Deterministic shell, probabilistic core</h2>
+      <p>(Ties to your usability talk.) Keep the UI deterministic; let only the AI-generated content vary. Stream it, label it, make it overridable.</p>
+      <h2>📐 The decision grid</h2>
+      <div class="grid3">
+        <div class="card"><h3>On-device</h3><p style="margin:0;font-size:13px">✅ private, offline, free, instant<br/>❌ smaller models, big first download</p></div>
+        <div class="card"><h3>Server</h3><p style="margin:0;font-size:13px">✅ biggest models, no client load<br/>❌ cost, latency, data leaves device</p></div>
+        <div class="card"><h3>Hybrid</h3><p style="margin:0;font-size:13px">✅ best of both, graceful<br/>❌ more engineering, two code paths</p></div>
+      </div>
+      <div class="takeaway"><b>The closing line for your talk:</b> "The browser used to be where AI was <i>displayed</i>. Now it's where AI <i>runs</i>. That changes what we can build — private, offline, instant, free."</div>
+    `
+  },
+  {
+    id:'plan', icon:'📅', group:'Wrap up', title:'3-Day Plan',
+    html:`
+      <div class="eyebrow">Your study plan</div>
+      <h1>3 days to fluent</h1>
+      <div class="day">
+        <div class="day-h">Day 1 — Compute & Runtimes</div>
+        <div class="day-sub">Get the foundation + a real win on screen</div>
+        <div class="plan-tasks" data-day="1"></div>
+      </div>
+      <div class="day">
+        <div class="day-h">Day 2 — Built-in AI, Transport & Storage</div>
+        <div class="day-sub">The "new" parts + how data moves and persists</div>
+        <div class="plan-tasks" data-day="2"></div>
+      </div>
+      <div class="day">
+        <div class="day-h">Day 3 — Multimodal, RAG & build the demo</div>
+        <div class="day-sub">Tie it together into one thing you can show</div>
+        <div class="plan-tasks" data-day="3"></div>
+      </div>
+    `
+  },
+  {
+    id:'resources', icon:'📚', group:'Wrap up', title:'Resources',
+    html:`
+      <div class="eyebrow">Go deeper</div>
+      <h1>Curated resources</h1>
+      <div id="resList"></div>
+      <div class="warn"><b>Tip:</b> the fastest way to learn is to clone a WebLLM example, run it, then read its source — you'll see WebGPU + OPFS + Web Workers + streaming all working together in one real app.</div>
+    `
+  },
+];
+
+const PLAN = {
+  1:[
+    'Read the Compute tab; run the live WebGPU demo and read the WGSL idea behind it',
+    'Skim the WebGPU fundamentals article (webgpufundamentals.org)',
+    'Understand WebGPU vs WebNN vs Wasm — write the 3-line summary in your own words',
+    'Clone & run a WebLLM example locally; watch the model cache to OPFS',
+    'Run a Transformers.js sentiment/embedding pipeline in a blank HTML file',
+  ],
+  2:[
+    'Enable Built-in AI in Chrome (chrome://flags) and run the Prompt API live demo',
+    'Build a tiny SSE/fetch-stream token UI (use any mock endpoint)',
+    'Read the WebTransport explainer; note how it differs from WebSockets',
+    'Do the OPFS read/write demo; inspect storage in DevTools → Application',
+    'Set COOP/COEP headers on a local server and confirm crossOriginIsolated === true',
+  ],
+  3:[
+    'Run the Web Worker + Web Audio demos; sketch a voice pipeline',
+    'Read one in-browser RAG example (transformers.js embeddings + a Wasm vector store)',
+    'Decide your talk demo: WebLLM offline chat OR Built-in AI summarizer',
+    'Build the demo end-to-end; test with wifi OFF to prove on-device',
+    'Write your 5 key takeaways (lift them from each tab\\'s takeaway box)',
+  ],
+};
+
+const RESOURCES = [
+  ['🎮','WebGPU Fundamentals','webgpufundamentals.org — the best WebGPU intro'],
+  ['🧠','WebNN spec & samples','webmachinelearning.github.io/webnn — W3C draft + demos'],
+  ['🤗','Transformers.js docs','huggingface.co/docs/transformers.js'],
+  ['🦙','WebLLM','github.com/mlc-ai/web-llm — in-browser LLMs over WebGPU'],
+  ['✨','Chrome Built-in AI','developer.chrome.com/docs/ai/built-in — Prompt & task APIs'],
+  ['🚀','WebTransport explainer','developer.mozilla.org/en-US/docs/Web/API/WebTransport'],
+  ['💾','OPFS guide','developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system'],
+  ['🧵','Cross-origin isolation','web.dev/articles/coop-coep'],
+  ['🎬','WebCodecs','developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API'],
+  ['📊','web.dev — On-device AI','web.dev/explore/ai — Google\\'s hub for client-side AI'],
+];
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER
+// ════════════════════════════════════════════════════════════════
+const nav = document.getElementById('nav');
+const content = document.getElementById('content');
+const explored = new Set(JSON.parse(localStorage.getItem('waih_explored')||'[]'));
+const planDone = new Set(JSON.parse(localStorage.getItem('waih_plan')||'[]'));
+
+function renderNav(){
+  nav.innerHTML='';
+  let lastGroup='';
+  SECTIONS.forEach((s)=>{
+    if(s.group!==lastGroup){
+      const g=document.createElement('div');g.className='nav-group-label';g.textContent=s.group;nav.appendChild(g);lastGroup=s.group;
+    }
+    const el=document.createElement('div');
+    el.className='nav-item'+(s.id===current?' active':'');
+    el.innerHTML=`<div class="ico">${s.icon}</div><span>${s.title}</span><div class="chk ${explored.has(s.id)?'done':''}" title="Mark explored">✓</div>`;
+    el.onclick=(e)=>{ if(e.target.classList.contains('chk')){toggleExplored(s.id);e.stopPropagation();return;} go(s.id); };
+    nav.appendChild(el);
+  });
+}
+
+function toggleExplored(id){
+  if(explored.has(id))explored.delete(id); else explored.add(id);
+  localStorage.setItem('waih_explored',JSON.stringify([...explored]));
+  renderNav();updateProgress();
+}
+function updateProgress(){
+  const total=SECTIONS.filter(s=>s.group==='The Stack'||s.id==='builtin').length;
+  document.getElementById('progressMini').textContent=`${explored.size} / ${SECTIONS.length} explored`;
+}
+
+let current='overview';
+function go(id){
+  current=id;
+  const s=SECTIONS.find(x=>x.id===id);
+  content.innerHTML=`<div class="page active">${s.html}</div>`;
+  content.scrollTop=0;
+  explored.add(id);localStorage.setItem('waih_explored',JSON.stringify([...explored]));
+  renderNav();updateProgress();
+  if(s.live==='caps')renderCaps();
+  if(s.id==='plan')renderPlan();
+  if(s.id==='resources')renderResources();
+  wireDemos();
+}
+
+// ── Capability detection ────────────────────────────────────────
+function detectCaps(){
+  const has=(c)=>{try{return !!c()}catch(e){return false}};
+  return [
+    ['WebGPU',()=>has(()=> 'gpu' in navigator),'navigator.gpu'],
+    ['WebNN',()=>has(()=> 'ml' in navigator),'navigator.ml'],
+    ['WebAssembly',()=>has(()=> typeof WebAssembly==='object'),'core Wasm'],
+    ['Web Workers',()=>has(()=> typeof Worker!=='undefined'),'background threads'],
+    ['SharedArrayBuffer',()=>has(()=> typeof SharedArrayBuffer!=='undefined'),'needs COOP/COEP'],
+    ['Cross-origin isolated',()=>has(()=> self.crossOriginIsolated===true),'COOP+COEP set'],
+    ['OPFS',()=>has(()=> navigator.storage && 'getDirectory' in navigator.storage),'private file system'],
+    ['WebTransport',()=>has(()=> typeof WebTransport!=='undefined'),'HTTP/3 transport'],
+    ['WebRTC',()=>has(()=> typeof RTCPeerConnection!=='undefined'),'realtime audio/video'],
+    ['Server-Sent Events',()=>has(()=> typeof EventSource!=='undefined'),'token streaming'],
+    ['WebCodecs',()=>has(()=> typeof VideoEncoder!=='undefined'),'video/audio frames'],
+    ['Web Audio',()=>has(()=> typeof (window.AudioContext||window.webkitAudioContext)!=='undefined'),'voice I/O'],
+    ['Built-in AI (Prompt)',()=>has(()=> 'LanguageModel' in self || (window.ai && (window.ai.languageModel||window.ai.assistant))),'Gemini Nano'],
+    ['Service Worker',()=>has(()=> 'serviceWorker' in navigator),'offline / cache'],
+    ['Cache API',()=>has(()=> 'caches' in window),'HTTP cache'],
+    ['IndexedDB',()=>has(()=> 'indexedDB' in window),'structured store'],
+  ];
+}
+function renderCaps(){
+  const grid=document.getElementById('capGrid');if(!grid)return;
+  grid.innerHTML='';
+  detectCaps().forEach(([name,fn,detail])=>{
+    const ok=fn();
+    const el=document.createElement('div');el.className='cap';
+    el.innerHTML=`<div class="status ${ok?'yes':'no'}">${ok?'✓':'✕'}</div><div class="info"><div class="name">${name}</div><div class="detail">${detail}</div></div>`;
+    grid.appendChild(el);
+  });
+}
+
+function renderPlan(){
+  document.querySelectorAll('.plan-tasks').forEach(box=>{
+    const day=box.dataset.day;box.innerHTML='';
+    PLAN[day].forEach((t,i)=>{
+      const key=`d${day}-${i}`;const done=planDone.has(key);
+      const el=document.createElement('div');el.className='task'+(done?' done':'');
+      el.innerHTML=`<div class="tbox ${done?'done':''}">✓</div><span>${t}</span>`;
+      el.querySelector('.tbox').onclick=()=>{ if(planDone.has(key))planDone.delete(key);else planDone.add(key);localStorage.setItem('waih_plan',JSON.stringify([...planDone]));renderPlan(); };
+      box.appendChild(el);
+    });
+  });
+}
+function renderResources(){
+  const list=document.getElementById('resList');if(!list)return;list.innerHTML='';
+  RESOURCES.forEach(([ico,t,d])=>{
+    const el=document.createElement('div');el.className='res';
+    el.innerHTML=`<div class="rico">${ico}</div><div class="rbody"><div class="rt">${t}</div><div class="rd">${d}</div></div>`;
+    list.appendChild(el);
+  });
+}
+
+// ── Live demos ──────────────────────────────────────────────────
+function wireDemos(){
+  const $=(id)=>document.getElementById(id);
+  const set=(id,html,cls)=>{const e=$(id);if(e){e.innerHTML=html;if(cls)e.className='demo-out '+cls;else e.className='demo-out';}};
+
+  // WebGPU compute
+  if($('btn-webgpu'))$('btn-webgpu').onclick=async()=>{
+    set('out-webgpu','Requesting GPU…');
+    try{
+      if(!('gpu' in navigator)){set('out-webgpu','❌ WebGPU not available in this browser.','err');return;}
+      const adapter=await navigator.gpu.requestAdapter();
+      if(!adapter){set('out-webgpu','❌ No GPU adapter.','err');return;}
+      const device=await adapter.requestDevice();
+      const a=new Float32Array([1,2,3,4]),b=new Float32Array([10,20,30,40]);
+      const mk=(arr)=>{const buf=device.createBuffer({size:arr.byteLength,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_SRC|GPUBufferUsage.COPY_DST});device.queue.writeBuffer(buf,0,arr);return buf;};
+      const bufA=mk(a),bufB=mk(b),bufOut=device.createBuffer({size:a.byteLength,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_SRC});
+      const read=device.createBuffer({size:a.byteLength,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});
+      const shader=device.createShaderModule({code:`@group(0)@binding(0) var<storage,read> a:array<f32>;@group(0)@binding(1) var<storage,read> b:array<f32>;@group(0)@binding(2) var<storage,read_write> o:array<f32>;@compute @workgroup_size(4) fn main(@builtin(global_invocation_id) gid:vec3u){o[gid.x]=a[gid.x]+b[gid.x];}`});
+      const pipe=device.createComputePipeline({layout:'auto',compute:{module:shader,entryPoint:'main'}});
+      const bind=device.createBindGroup({layout:pipe.getBindGroupLayout(0),entries:[{binding:0,resource:{buffer:bufA}},{binding:1,resource:{buffer:bufB}},{binding:2,resource:{buffer:bufOut}}]});
+      const enc=device.createCommandEncoder();const pass=enc.beginComputePass();pass.setPipeline(pipe);pass.setBindGroup(0,bind);pass.dispatchWorkgroups(1);pass.end();
+      enc.copyBufferToBuffer(bufOut,0,read,0,a.byteLength);device.queue.submit([enc.finish()]);
+      await read.mapAsync(GPUMapMode.READ);const result=Array.from(new Float32Array(read.getMappedRange()));
+      set('out-webgpu',`✓ GPU device acquired: ${adapter.info?.vendor||'gpu'} ${adapter.info?.architecture||''}\n\n[1,2,3,4] + [10,20,30,40]\n= [${result.join(', ')}]\n\n↑ computed on the GPU via a WGSL compute shader.`);
+    }catch(err){set('out-webgpu','❌ '+err.message,'err');}
+  };
+
+  // Built-in AI detection
+  if($('btn-builtin'))$('btn-builtin').onclick=async()=>{
+    set('out-builtin','Detecting…');
+    try{
+      const lm = self.LanguageModel || (window.ai&&(window.ai.languageModel||window.ai.assistant));
+      if(!lm){set('out-builtin','❌ Prompt API not found.\nEnable in Chrome: chrome://flags → "Prompt API for Gemini Nano" + "Optimization Guide On Device".','err');return;}
+      let avail='unknown';
+      try{ avail = (await (lm.availability? lm.availability() : lm.capabilities?.().then(c=>c.available))) ?? 'detected'; }catch(e){avail='detected';}
+      set('out-builtin',`✓ Prompt API present.\nAvailability: ${avail}\n\nNext: const s = await LanguageModel.create(); await s.prompt('hi')`);
+    }catch(err){set('out-builtin','❌ '+err.message,'err');}
+  };
+
+  // SSE streaming simulation
+  if($('btn-sse'))$('btn-sse').onclick=()=>{
+    const words='Streaming makes AI feel instant — tokens arrive one by one, so the user reads while the model writes, instead of staring at a spinner.'.split(' ');
+    let i=0;set('out-sse','');const out=$('out-sse');
+    const tick=()=>{ if(i>=words.length){out.innerHTML+=' <span class="muted">[done]</span>';return;} out.textContent+=(i?' ':'')+words[i++]; setTimeout(tick,90); };
+    tick();
+  };
+
+  // OPFS round-trip
+  if($('btn-opfs'))$('btn-opfs').onclick=async()=>{
+    set('out-opfs','Writing…');
+    try{
+      if(!(navigator.storage&&navigator.storage.getDirectory)){set('out-opfs','❌ OPFS not available here.','err');return;}
+      const root=await navigator.storage.getDirectory();
+      const fh=await root.getFileHandle('waih-demo.txt',{create:true});
+      const w=await fh.createWritable();const payload=`saved at ${new Date().toISOString()}`;await w.write(payload);await w.close();
+      const file=await(await root.getFileHandle('waih-demo.txt')).getFile();const text=await file.text();
+      let quota='';try{const est=await navigator.storage.estimate();quota=`\nQuota: ${(est.usage/1e6).toFixed(1)} MB used of ${(est.quota/1e9).toFixed(1)} GB`;}catch(e){}
+      set('out-opfs',`✓ wrote → OPFS, read back:\n"${text}"${quota}`);
+    }catch(err){set('out-opfs','❌ '+err.message,'err');}
+  };
+
+  // Web Worker
+  if($('btn-worker'))$('btn-worker').onclick=()=>{
+    set('out-worker','Spawning worker…');
+    try{
+      const code=`onmessage=(e)=>{let s=0;for(let i=0;i<e.data;i++){s+=Math.sqrt(i);}postMessage(s);}`;
+      const url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
+      const w=new Worker(url);const t=performance.now();
+      w.onmessage=(e)=>{set('out-worker',`✓ Worker computed sum of sqrt(0..50,000,000)\n= ${e.data.toFixed(0)}\nin ${(performance.now()-t).toFixed(0)}ms — off the main thread (UI never froze).`);w.terminate();URL.revokeObjectURL(url);};
+      w.postMessage(50000000);
+    }catch(err){set('out-worker','❌ '+err.message,'err');}
+  };
+
+  // Web Audio tone
+  if($('btn-audio'))$('btn-audio').onclick=()=>{
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC){set('out-audio','❌ Web Audio not available.','err');return;}
+      const ctx=new AC();const osc=ctx.createOscillator();const gain=ctx.createGain();
+      osc.frequency.value=440;gain.gain.value=0.08;osc.connect(gain).connect(ctx.destination);osc.start();
+      setTimeout(()=>{osc.stop();},500);
+      set('out-audio','✓ Played 440 Hz for 0.5s via AudioContext.\nSame rig (mic in → AudioWorklet → model → tone out) powers voice AI.');
+    }catch(err){set('out-audio','❌ '+err.message,'err');}
+  };
+}
+
+// init
+renderNav();go('overview');updateProgress();
+</script>
+</body>
+</html>
