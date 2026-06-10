@@ -30,7 +30,7 @@ export default function BuiltinAI() {
 
       <div dangerouslySetInnerHTML={{ __html: `
         <div class="takeaway"><b>Why it matters:</b> zero-cost, private, offline, instant. The killer pattern is <b>hybrid</b> — try the on-device model first, escalate to a server model only when the task is too big. See the Patterns tab.</div>
-        <div class="warn"><b>Moving target:</b> the exact API names changed during origin trials (<code>window.ai</code> → <code>LanguageModel</code> / <code>self.ai</code>). Always check the current Chrome docs the day of your talk.</div>
+        <div class="warn"><b>Moving target:</b> the exact API names changed during origin trials (<code>window.ai</code> → <code>LanguageModel</code> / <code>self.ai</code>). Always check the current Chrome docs before relying on it.</div>
       ` }} />
     </>
   );

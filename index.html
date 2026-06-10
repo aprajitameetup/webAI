@@ -166,7 +166,7 @@ const SECTIONS = [
       <div class="stacklayer"><div class="num">6</div><div class="ltext"><b>Concurrency</b> &nbsp;<span>Web Workers · SharedArrayBuffer · COOP/COEP</span></div></div>
       <div class="stacklayer"><div class="num">7</div><div class="ltext"><b>Multimodal I/O</b> &nbsp;<span>WebCodecs · Web Audio — voice & vision</span></div></div>
 
-      <div class="takeaway"><b>Talk thesis:</b> "Compute + Models + Transport + Storage + I/O have all matured at once — so the browser can now be the AI runtime, not just the AI client."</div>
+      <div class="takeaway"><b>The thesis:</b> Compute + Models + Transport + Storage + I/O have all matured at once — so the browser can now be the AI runtime, not just the AI client.</div>
 
       <h2>How to use this over 3 days</h2>
       <p>Each section has: <strong>what it is</strong>, <strong>why it matters</strong>, a <strong>code snippet</strong>, and where possible a <strong>live demo</strong>. Tick sections off in the sidebar as you go. The <strong>Live Capabilities</strong> tab shows what your current browser supports — start there to see the stack is real.</p>
@@ -204,7 +204,7 @@ const SECTIONS = [
       <div class="takeaway"><b>Mental model:</b> WebGPU = the fast lane (GPU), Wasm = the reliable lane (CPU). Good runtimes try WebGPU and fall back to Wasm automatically.</div>
 
       <h2>🧠 WebNN — Web Neural Network API <span class="pill new">The new one</span></h2>
-      <p>This is the piece most "web AI" talks miss. WebNN is a <strong>W3C standard built specifically for ML inference</strong>. Instead of you hand-writing compute shaders, you describe a <em>graph</em> of neural-network ops and the browser routes it to the OS's native accelerator — <strong>DirectML</strong> (Windows), <strong>Core ML</strong> (Apple), <strong>NNAPI</strong> (Android), even NPUs.</p>
+      <p>This is the piece most "web AI" overviews miss. WebNN is a <strong>W3C standard built specifically for ML inference</strong>. Instead of you hand-writing compute shaders, you describe a <em>graph</em> of neural-network ops and the browser routes it to the OS's native accelerator — <strong>DirectML</strong> (Windows), <strong>Core ML</strong> (Apple), <strong>NNAPI</strong> (Android), even NPUs.</p>
       <ul>
         <li><strong>WebGPU</strong> = low-level, you build the kernels.</li>
         <li><strong>WebNN</strong> = high-level, you describe the model and the OS picks the best hardware (including dedicated AI chips / NPUs).</li>
@@ -212,7 +212,7 @@ const SECTIONS = [
       <pre><code><span class="tok-key">const</span> context = <span class="tok-key">await</span> navigator.ml.<span class="tok-fn">createContext</span>({ deviceType: <span class="tok-str">'gpu'</span> });
 <span class="tok-key">const</span> builder = <span class="tok-key">new</span> <span class="tok-fn">MLGraphBuilder</span>(context);
 <span class="tok-com">// describe ops: conv2d, matmul, relu… then build() and compute()</span></code></pre>
-      <div class="warn"><b>Status:</b> WebNN is still behind flags in most browsers (Chrome/Edge origin trials). Worth knowing deeply because it's where the platform is heading — and it's a strong "you haven't heard of this yet" moment for your talk.</div>
+      <div class="warn"><b>Status:</b> WebNN is still behind flags in most browsers (Chrome/Edge origin trials). Worth knowing deeply because it's where the platform is heading — and it's the part of the stack most developers haven't met yet.</div>
     `
   },
   {
@@ -269,7 +269,7 @@ const SECTIONS = [
       </div>
 
       <div class="takeaway"><b>Why it matters:</b> zero-cost, private, offline, instant. The killer pattern is <b>hybrid</b> — try the on-device model first, escalate to a server model only when the task is too big. See the Patterns tab.</div>
-      <div class="warn"><b>Moving target:</b> the exact API names changed during origin trials (<code>window.ai</code> → <code>LanguageModel</code> / <code>self.ai</code>). Always check the current Chrome docs the day of your talk.</div>
+      <div class="warn"><b>Moving target:</b> the exact API names changed during origin trials (<code>window.ai</code> → <code>LanguageModel</code> / <code>self.ai</code>). Always check the current Chrome docs before relying on it.</div>
     `
   },
   {
@@ -294,7 +294,7 @@ const SECTIONS = [
 
       <h2>🎙️ WebRTC <span class="pill ship">Voice AI</span></h2>
       <p>Real-time peer audio/video + data channels. The backbone of <strong>realtime voice assistants</strong> (e.g. OpenAI Realtime). Sub-100ms audio in/out for speech-to-speech models.</p>
-      <div class="takeaway"><b>For the talk:</b> be honest — "SSE is what you'll ship today; WebTransport is what you'll ship in two years; WebRTC is how you do voice now."</div>
+      <div class="takeaway"><b>The honest summary:</b> SSE is what you ship today; WebTransport is where it's heading; WebRTC is how you do voice now.</div>
     `
   },
   {
@@ -389,14 +389,14 @@ Cross-Origin-Embedder-Policy: require-corp</code></pre>
       <h2>🔀 Hybrid (on-device → escalate)</h2>
       <p>The defining pattern of the new stack. Try the <strong>on-device</strong> model (Built-in AI / WebLLM) for speed, privacy, and zero cost. Escalate to a <strong>server</strong> model only when the task exceeds local capability. Decide by task size, confidence, or capability detection.</p>
       <h2>🧩 Deterministic shell, probabilistic core</h2>
-      <p>(Ties to your usability talk.) Keep the UI deterministic; let only the AI-generated content vary. Stream it, label it, make it overridable.</p>
+      <p>Keep the UI deterministic; let only the AI-generated content vary. Stream it, label it, make it overridable.</p>
       <h2>📐 The decision grid</h2>
       <div class="grid3">
         <div class="card"><h3>On-device</h3><p style="margin:0;font-size:13px">✅ private, offline, free, instant<br/>❌ smaller models, big first download</p></div>
         <div class="card"><h3>Server</h3><p style="margin:0;font-size:13px">✅ biggest models, no client load<br/>❌ cost, latency, data leaves device</p></div>
         <div class="card"><h3>Hybrid</h3><p style="margin:0;font-size:13px">✅ best of both, graceful<br/>❌ more engineering, two code paths</p></div>
       </div>
-      <div class="takeaway"><b>The closing line for your talk:</b> "The browser used to be where AI was <i>displayed</i>. Now it's where AI <i>runs</i>. That changes what we can build — private, offline, instant, free."</div>
+      <div class="takeaway"><b>The shift:</b> The browser used to be where AI was <i>displayed</i>. Now it's where AI <i>runs</i> — which changes what we can build: private, offline, instant, free.</div>
     `
   },
   {
@@ -450,7 +450,7 @@ const PLAN = {
   3:[
     'Run the Web Worker + Web Audio demos; sketch a voice pipeline',
     'Read one in-browser RAG example (transformers.js embeddings + a Wasm vector store)',
-    'Decide your talk demo: WebLLM offline chat OR Built-in AI summarizer',
+    'Build a demo: WebLLM offline chat OR Built-in AI summarizer',
     'Build the demo end-to-end; test with wifi OFF to prove on-device',
     'Write your 5 key takeaways (lift them from each tab\'s takeaway box)',
   ],

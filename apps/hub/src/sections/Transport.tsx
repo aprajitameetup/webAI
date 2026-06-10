@@ -24,7 +24,7 @@ export default function Transport() {
 
         <h2>🎙️ WebRTC <span class="pill ship">Voice AI</span></h2>
         <p>Real-time peer audio/video + data channels. The backbone of <strong>realtime voice assistants</strong> (e.g. OpenAI Realtime). Sub-100ms audio in/out for speech-to-speech models.</p>
-        <div class="takeaway"><b>For the talk:</b> be honest — "SSE is what you'll ship today; WebTransport is what you'll ship in two years; WebRTC is how you do voice now."</div>
+        <div class="takeaway"><b>The honest summary:</b> SSE is what you ship today; WebTransport is where it's heading; WebRTC is how you do voice now.</div>
       ` }} />
     </>
   );

@@ -28,7 +28,7 @@ export default function Plan() {
         <div class="day-sub">Tie it together into one thing you can show</div>
         <div class="task"><div class="tbox"></div><span>Run the Web Worker + Web Audio demos; sketch a voice pipeline</span></div>
         <div class="task"><div class="tbox"></div><span>Read one in-browser RAG example (transformers.js embeddings + a Wasm vector store)</span></div>
-        <div class="task"><div class="tbox"></div><span>Decide your talk demo: WebLLM offline chat OR Built-in AI summarizer</span></div>
+        <div class="task"><div class="tbox"></div><span>Build a demo: WebLLM offline chat OR Built-in AI summarizer</span></div>
         <div class="task"><div class="tbox"></div><span>Build the demo end-to-end; test with wifi OFF to prove on-device</span></div>
         <div class="task"><div class="tbox"></div><span>Write your 5 key takeaways (lift them from each tab's takeaway box)</span></div>
       </div>

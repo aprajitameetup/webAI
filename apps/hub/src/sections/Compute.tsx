@@ -24,7 +24,7 @@ export default function Compute() {
         <div class="takeaway"><b>Mental model:</b> WebGPU = the fast lane (GPU), Wasm = the reliable lane (CPU). Good runtimes try WebGPU and fall back to Wasm automatically.</div>
 
         <h2>🧠 WebNN — Web Neural Network API <span class="pill new">The new one</span></h2>
-        <p>This is the piece most "web AI" talks miss. WebNN is a <strong>W3C standard built specifically for ML inference</strong>. Instead of you hand-writing compute shaders, you describe a <em>graph</em> of neural-network ops and the browser routes it to the OS's native accelerator — <strong>DirectML</strong> (Windows), <strong>Core ML</strong> (Apple), <strong>NNAPI</strong> (Android), even NPUs.</p>
+        <p>This is the piece most "web AI" overviews miss. WebNN is a <strong>W3C standard built specifically for ML inference</strong>. Instead of you hand-writing compute shaders, you describe a <em>graph</em> of neural-network ops and the browser routes it to the OS's native accelerator — <strong>DirectML</strong> (Windows), <strong>Core ML</strong> (Apple), <strong>NNAPI</strong> (Android), even NPUs.</p>
         <ul>
           <li><strong>WebGPU</strong> = low-level, you build the kernels.</li>
           <li><strong>WebNN</strong> = high-level, you describe the model and the OS picks the best hardware (including dedicated AI chips / NPUs).</li>
@@ -32,7 +32,7 @@ export default function Compute() {
         <pre><code><span class="tok-key">const</span> context = <span class="tok-key">await</span> navigator.ml.<span class="tok-fn">createContext</span>({ deviceType: <span class="tok-str">'gpu'</span> });
 <span class="tok-key">const</span> builder = <span class="tok-key">new</span> <span class="tok-fn">MLGraphBuilder</span>(context);
 <span class="tok-com">// describe ops: conv2d, matmul, relu… then build() and compute()</span></code></pre>
-        <div class="warn"><b>Status:</b> WebNN is still behind flags in most browsers (Chrome/Edge origin trials). Worth knowing deeply because it's where the platform is heading — and it's a strong "you haven't heard of this yet" moment for your talk.</div>
+        <div class="warn"><b>Status:</b> WebNN is still behind flags in most browsers (Chrome/Edge origin trials). Worth knowing deeply because it's where the platform is heading — and it's the part of the stack most developers haven't met yet.</div>
       ` }} />
     </>
   );
