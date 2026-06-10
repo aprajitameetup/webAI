@@ -1,4 +1,5 @@
 import React from "react";
+import AudioDemo from "../components/demos/AudioDemo";
 
 export default function Multimodal() {
   return (
@@ -17,12 +18,7 @@ export default function Multimodal() {
 <span class="tok-key">await</span> ctx.audioWorklet.<span class="tok-fn">addModule</span>(<span class="tok-str">'processor.js'</span>); <span class="tok-com">// runs on the audio thread</span></code></pre>
       ` }} />
 
-      <div className="demo">
-        <div className="demo-head">
-          <div className="title">🔊 Live: Web Audio (play a tone)</div>
-        </div>
-        <div className="demo-out">…demo coming in next task…</div>
-      </div>
+      <AudioDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <div class="takeaway"><b>Voice AI pipeline:</b> mic → Web Audio/AudioWorklet → ASR (Transformers.js Whisper) → LLM → TTS → Web Audio out. Every box is a browser API on this list.</div>

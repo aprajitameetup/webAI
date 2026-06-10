@@ -1,4 +1,5 @@
 import React from "react";
+import WebGPUDemo from "../components/demos/WebGPUDemo";
 
 export default function Compute() {
   return (
@@ -15,12 +16,7 @@ export default function Compute() {
 <span class="tok-com">// upload buffers, write a WGSL compute shader, dispatch, read back</span></code></pre>
       ` }} />
 
-      <div className="demo">
-        <div className="demo-head">
-          <div className="title">🎮 Live: WebGPU compute shader</div>
-        </div>
-        <div className="demo-out">…demo coming in next task…</div>
-      </div>
+      <WebGPUDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <h2>🧩 WebAssembly <span class="pill ship">Shipping</span></h2>

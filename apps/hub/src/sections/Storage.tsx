@@ -1,4 +1,5 @@
 import React from "react";
+import OpfsDemo from "../components/demos/OpfsDemo";
 
 export default function Storage() {
   return (
@@ -15,12 +16,7 @@ export default function Storage() {
 <span class="tok-key">const</span> w = <span class="tok-key">await</span> fh.<span class="tok-fn">createWritable</span>(); <span class="tok-key">await</span> w.<span class="tok-fn">write</span>(blob); <span class="tok-key">await</span> w.<span class="tok-fn">close</span>();</code></pre>
       ` }} />
 
-      <div className="demo">
-        <div className="demo-head">
-          <div className="title">💾 Live: write &amp; read a file in OPFS</div>
-        </div>
-        <div className="demo-out">…demo coming in next task…</div>
-      </div>
+      <OpfsDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <div class="grid2">

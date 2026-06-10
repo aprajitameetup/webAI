@@ -1,4 +1,5 @@
 import React from "react";
+import WorkerDemo from "../components/demos/WorkerDemo";
 
 export default function Concurrency() {
   return (
@@ -12,12 +13,7 @@ export default function Concurrency() {
         <p>Run inference on a background thread; post messages back to the UI. Every serious in-browser AI lib runs the model in a worker (or <strong>OffscreenCanvas</strong> for rendering).</p>
       ` }} />
 
-      <div className="demo">
-        <div className="demo-head">
-          <div className="title">🧵 Live: offload work to a Web Worker</div>
-        </div>
-        <div className="demo-out">…demo coming in next task…</div>
-      </div>
+      <WorkerDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <h2>🔗 SharedArrayBuffer + cross-origin isolation <span class="pill exp">The gotcha</span></h2>

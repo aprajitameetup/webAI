@@ -1,4 +1,5 @@
 import React from "react";
+import StreamDemo from "../components/demos/StreamDemo";
 
 export default function Transport() {
   return (
@@ -15,12 +16,7 @@ export default function Transport() {
 <span class="tok-key">while</span> (<span class="tok-key">true</span>) { <span class="tok-key">const</span> {done,value} = <span class="tok-key">await</span> reader.<span class="tok-fn">read</span>(); <span class="tok-key">if</span>(done) <span class="tok-key">break</span>; <span class="tok-com">/* decode + append */</span> }</code></pre>
       ` }} />
 
-      <div className="demo">
-        <div className="demo-head">
-          <div className="title">📡 Live: token-streaming UX (simulated)</div>
-        </div>
-        <div className="demo-out">…demo coming in next task…</div>
-      </div>
+      <StreamDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <h2>🚀 WebTransport <span class="pill new">Where it's going</span></h2>
