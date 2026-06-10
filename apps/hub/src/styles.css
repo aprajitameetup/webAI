@@ -7,6 +7,9 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  /* React mounts everything inside #root — it must own the viewport height + flex column
+     so .layout (flex:1) and .content (overflow-y:auto) get a bounded height to scroll within. */
+  #root{height:100vh;display:flex;flex-direction:column;min-height:0;width:100%}
 
   /* TOP BAR */
   .topbar{display:flex;align-items:center;gap:14px;padding:0 20px;height:54px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
