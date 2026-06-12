@@ -1,6 +1,14 @@
-﻿packages:
+packages:
   - "packages/*"
   - "apps/*"
+
+# Node-only transitive deps (Transformers.js Node path). We only use the
+# browser Wasm/WebGPU path, so their native build scripts stay off.
+allowBuilds:
+  core-js: false
+  onnxruntime-node: false
+  protobufjs: false
+  sharp: false
 
 onlyBuiltDependencies:
   - esbuild
