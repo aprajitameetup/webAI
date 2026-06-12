@@ -29,6 +29,14 @@ export default defineConfig({
         followRedirects: true,
         rewrite: (path) => path.replace(/^\/jsdelivr/, ""),
       },
+      // MediaPipe model (.task) files live on storage.googleapis.com; proxy them
+      // same-origin to satisfy our cross-origin-isolated (COEP) page.
+      "/gstorage": {
+        target: "https://storage.googleapis.com",
+        changeOrigin: true,
+        followRedirects: true,
+        rewrite: (path) => path.replace(/^\/gstorage/, ""),
+      },
     },
   },
 });
