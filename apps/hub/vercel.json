@@ -1,4 +1,9 @@
 {
+  "rewrites": [
+    { "source": "/hf/(.*)", "destination": "/api/hf/$1" },
+    { "source": "/jsdelivr/(.*)", "destination": "/api/jsdelivr/$1" },
+    { "source": "/gstorage/(.*)", "destination": "/api/gstorage/$1" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
