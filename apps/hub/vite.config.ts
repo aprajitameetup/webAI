@@ -20,6 +20,15 @@ export default defineConfig({
         followRedirects: true,
         rewrite: (path) => path.replace(/^\/hf/, ""),
       },
+      // Pyodide (and other CDN assets) load from jsdelivr; route through a
+      // same-origin proxy so they aren't blocked by our cross-origin-isolated
+      // (COEP) page.
+      "/jsdelivr": {
+        target: "https://cdn.jsdelivr.net",
+        changeOrigin: true,
+        followRedirects: true,
+        rewrite: (path) => path.replace(/^\/jsdelivr/, ""),
+      },
     },
   },
 });
