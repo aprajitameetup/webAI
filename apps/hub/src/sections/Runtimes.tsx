@@ -2,6 +2,7 @@ import React from "react";
 import ChatDemo from "../ChatDemo";
 import TransformersDemo from "../components/demos/runtimes/TransformersDemo";
 import TensorFlowDemo from "../components/demos/runtimes/TensorFlowDemo";
+import PyodideDemo from "../components/demos/runtimes/PyodideDemo";
 
 export default function Runtimes() {
   return (
@@ -36,6 +37,7 @@ export default function Runtimes() {
       <ChatDemo />
       <TransformersDemo />
       <TensorFlowDemo />
+      <PyodideDemo />
     </>
   );
 }
