@@ -3,6 +3,7 @@ import ChatDemo from "../ChatDemo";
 import TransformersDemo from "../components/demos/runtimes/TransformersDemo";
 import TensorFlowDemo from "../components/demos/runtimes/TensorFlowDemo";
 import PyodideDemo from "../components/demos/runtimes/PyodideDemo";
+import MediaPipeDemo from "../components/demos/runtimes/MediaPipeDemo";
 
 export default function Runtimes() {
   return (
@@ -38,6 +39,7 @@ export default function Runtimes() {
       <TransformersDemo />
       <TensorFlowDemo />
       <PyodideDemo />
+      <MediaPipeDemo />
     </>
   );
 }
