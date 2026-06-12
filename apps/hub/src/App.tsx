@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Nav, { NavSection } from "./components/Nav";
+import TheStack from "./sections/TheStack";
 import Overview from "./sections/Overview";
 import Capabilities from "./sections/Capabilities";
 import Compute from "./sections/Compute";
@@ -19,6 +20,7 @@ interface SectionMeta extends NavSection {
 }
 
 const SECTIONS: SectionMeta[] = [
+  { id: "the-stack",    icon: "🧱",  group: "Start here", title: "The Stack",          Component: TheStack },
   { id: "overview",     icon: "🗺️",  group: "Start here", title: "Overview",           Component: Overview },
   { id: "capabilities", icon: "🔬",  group: "Start here", title: "Live Capabilities",  Component: Capabilities },
   { id: "compute",      icon: "🧮",  group: "The Stack",  title: "Compute",            Component: Compute },

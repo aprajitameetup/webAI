@@ -18,7 +18,7 @@ export default function Overview() {
 
       <div class="takeaway"><b>The thesis:</b> Compute + Models + Transport + Storage + I/O have all matured at once — so the browser can now be the AI runtime, not just the AI client.</div>
 
-      <h2>How to use this over 3 days</h2>
+      <h2>How to use this over 10 days</h2>
       <p>Each section has: <strong>what it is</strong>, <strong>why it matters</strong>, a <strong>code snippet</strong>, and where possible a <strong>live demo</strong>. Tick sections off in the sidebar as you go. The <strong>Live Capabilities</strong> tab shows what your current browser supports — start there to see the stack is real.</p>
     ` }} />
   );
