@@ -32,18 +32,28 @@ export default function WasmDemo() {
         fnRef.current = instance.exports.sumsq as (n: number) => bigint;
       }
       const t0 = performance.now();
-      fnRef.current(N);
+      const wasmRes = fnRef.current(N);
       const t1 = performance.now();
       let acc = 0;
       for (let i = 0; i < N; i++) acc += i * i;
       const t2 = performance.now();
       const wms = t1 - t0;
       const jms = t2 - t1;
+      // Reference both results so the JIT can't dead-code-eliminate the JS loop.
+      const verdict =
+        Math.abs(wms - jms) / Math.max(wms, jms) < 0.25
+          ? "≈ a tie — JS JITs tight loops superbly."
+          : wms < jms
+            ? `WASM ${(jms / wms).toFixed(1)}× faster here.`
+            : `JS ${(wms / jms).toFixed(1)}× faster here — the JIT wins simple loops.`;
       setOutput(
-        `WASM:    ${wms.toFixed(1)} ms\n` +
-          `JS:      ${jms.toFixed(1)} ms\n` +
-          `speedup: ${(jms / wms).toFixed(1)}×\n` +
-          `(sum of i² for i < ${N.toLocaleString()}, tight loop)`,
+        `WASM:  ${wms.toFixed(1)} ms\n` +
+          `JS:    ${jms.toFixed(1)} ms   →  ${verdict}\n` +
+          `\nWASM isn't magically faster for a trivial loop — modern JS JITs are\n` +
+          `excellent. WASM's real edge: predictable speed (no warmup/deopt),\n` +
+          `SIMD + threads, and running existing C/C++/Rust — that's why\n` +
+          `llama.cpp and ONNX Runtime are WASM ports.\n` +
+          `\n(checksum w=${(wasmRes % 100000n).toString()} js=${(acc % 100000).toFixed(0)}, i² for i<${N.toLocaleString()})`,
       );
     } catch (e: any) {
       setOutput("❌ " + (e?.message ?? String(e)));
