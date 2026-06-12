@@ -1,5 +1,7 @@
 import React from "react";
 import ChatDemo from "../ChatDemo";
+import TransformersDemo from "../components/demos/runtimes/TransformersDemo";
+import TensorFlowDemo from "../components/demos/runtimes/TensorFlowDemo";
 
 export default function Runtimes() {
   return (
@@ -32,6 +34,8 @@ export default function Runtimes() {
     ` }} />
 
       <ChatDemo />
+      <TransformersDemo />
+      <TensorFlowDemo />
     </>
   );
 }
