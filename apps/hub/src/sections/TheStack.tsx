@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Six layers of the stack, bottom (index 0) to top (index 5).
-const LAYERS: Array<{ name: string; tech: string }> = [
-  { name: "Compute", tech: "WebGPU · WebAssembly" },
-  { name: "Runtimes", tech: "Transformers.js · ONNX · TensorFlow.js · MediaPipe · Pyodide" },
-  { name: "The model", tech: "WebLLM · Built-in AI (Gemini Nano)" },
-  { name: "Plumbing", tech: "Web Workers · OPFS / Cache · Streaming · COOP/COEP" },
-  { name: "Multimodal I/O", tech: "Web Audio · WebCodecs" },
-  { name: "In-browser RAG", tech: "Embeddings · Vector search" },
+// Tower bricks, bottom to top. `layer` is the narrative step at which a brick lights up —
+// the three "plumbing" bricks (Concurrency / Storage / Transport) share layer 3, so they
+// all activate together on that one step while staying visually distinct.
+const BRICKS: Array<{ name: string; tech: string; layer: number }> = [
+  { name: "Compute", tech: "WebGPU · WebAssembly", layer: 0 },
+  { name: "Runtimes", tech: "Transformers.js · ONNX · TensorFlow.js · MediaPipe · Pyodide", layer: 1 },
+  { name: "The model", tech: "WebLLM · Built-in AI (Gemini Nano)", layer: 2 },
+  { name: "Concurrency", tech: "Web Workers · SharedArrayBuffer · COOP/COEP", layer: 3 },
+  { name: "Storage", tech: "OPFS · Cache · IndexedDB", layer: 3 },
+  { name: "Transport", tech: "WebTransport · SSE · WebRTC", layer: 3 },
+  { name: "Multimodal I/O", tech: "Web Audio · WebCodecs", layer: 4 },
+  { name: "In-browser RAG", tech: "Embeddings · Vector search", layer: 5 },
 ];
 
 interface Step {
@@ -216,27 +220,24 @@ export default function TheStack() {
         </div>
 
         {/* Stack tower */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {[...LAYERS]
-            .map((layer, i) => ({ layer, i }))
-            .reverse()
-            .map(({ layer, i }) => (
-              <motion.div
-                key={layer.name}
-                animate={blockAnim(i, current.activeLayer)}
-                transition={{ type: "spring", stiffness: 220, damping: 24 }}
-                style={{
-                  border: "1px solid #2a3342",
-                  borderRadius: 10,
-                  padding: "14px 16px",
-                }}
-              >
-                <div style={{ fontWeight: 700, color: "#e6edf3" }}>{layer.name}</div>
-                <div className="detail" style={{ fontSize: 12.5, marginTop: 2 }}>
-                  {layer.tech}
-                </div>
-              </motion.div>
-            ))}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {[...BRICKS].reverse().map((brick) => (
+            <motion.div
+              key={brick.name}
+              animate={blockAnim(brick.layer, current.activeLayer)}
+              transition={{ type: "spring", stiffness: 220, damping: 24 }}
+              style={{
+                border: "1px solid #2a3342",
+                borderRadius: 10,
+                padding: "11px 14px",
+              }}
+            >
+              <div style={{ fontWeight: 700, color: "#e6edf3" }}>{brick.name}</div>
+              <div className="detail" style={{ fontSize: 12.5, marginTop: 2 }}>
+                {brick.tech}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
 
