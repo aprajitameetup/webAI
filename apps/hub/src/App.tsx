@@ -30,7 +30,7 @@ const SECTIONS: SectionMeta[] = [
   { id: "multimodal",   icon: "🎬",  group: "The Stack",  title: "Multimodal I/O",     Component: Multimodal },
   { id: "rag",          icon: "🔎",  group: "The Stack",  title: "In-browser RAG",     Component: Rag },
   { id: "patterns",     icon: "🏛️",  group: "Wrap up",    title: "Patterns & Architecture", Component: Patterns },
-  { id: "plan",         icon: "📅",  group: "Wrap up",    title: "3-Day Plan",         Component: Plan },
+  { id: "plan",         icon: "📅",  group: "Wrap up",    title: "10-Day Plan",        Component: Plan },
   { id: "resources",    icon: "📚",  group: "Wrap up",    title: "Resources",          Component: Resources },
 ];
 
