@@ -1,5 +1,7 @@
 import React from "react";
 import AudioDemo from "../components/demos/AudioDemo";
+import WebCodecsDemo from "../components/demos/WebCodecsDemo";
+import WebAudioDemo from "../components/demos/WebAudioDemo";
 
 export default function Multimodal() {
   return (
@@ -19,6 +21,8 @@ export default function Multimodal() {
       ` }} />
 
       <AudioDemo />
+      <WebCodecsDemo />
+      <WebAudioDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <div class="takeaway"><b>Voice AI pipeline:</b> mic → Web Audio/AudioWorklet → ASR (Transformers.js Whisper) → LLM → TTS → Web Audio out. Every box is a browser API on this list.</div>
