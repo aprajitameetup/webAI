@@ -51,7 +51,13 @@ export default function TensorFlowDemo() {
           {phase === "loading" ? "Loading model…" : "Classify"}
         </button>
       </div>
-      <input type="file" accept="image/*" onChange={onPick} style={{ marginBottom: 8, color: "#e6edf3" }} />
+      <div className="muted" style={{ marginBottom: 8, fontSize: 13 }}>
+        Model: <b>MobileNet</b> · a vision CNN trained on ImageNet (1000 everyday-object classes)
+      </div>
+      <input type="file" accept="image/*" onChange={onPick} style={{ marginBottom: 4, color: "#e6edf3" }} />
+      <div className="muted" style={{ marginBottom: 8, fontSize: 12 }}>
+        Tip: use a clear photo of a single animal or everyday object (dog, cat, mug, banana) — not a screenshot.
+      </div>
       {imgUrl && (
         <img
           ref={imgRef}
