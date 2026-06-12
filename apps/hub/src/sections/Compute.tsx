@@ -1,5 +1,6 @@
 import React from "react";
 import WebGPUDemo from "../components/demos/WebGPUDemo";
+import WasmDemo from "../components/demos/WasmDemo";
 
 export default function Compute() {
   return (
@@ -22,7 +23,11 @@ export default function Compute() {
         <h2>🧩 WebAssembly <span class="pill ship">Shipping</span></h2>
         <p>Near-native CPU performance in the browser. The <strong>fallback path</strong> when WebGPU isn't available, and the foundation for ONNX Runtime Web and llama.cpp ports. Key extensions for AI: <strong>SIMD</strong> (vectorised math), <strong>threads</strong> (needs SharedArrayBuffer), and <strong>Wasm GC</strong>.</p>
         <div class="takeaway"><b>Mental model:</b> WebGPU = the fast lane (GPU), Wasm = the reliable lane (CPU). Good runtimes try WebGPU and fall back to Wasm automatically.</div>
+      ` }} />
 
+      <WasmDemo />
+
+      <div dangerouslySetInnerHTML={{ __html: `
         <h2>🧠 WebNN — Web Neural Network API <span class="pill new">The new one</span></h2>
         <p>This is the piece most "web AI" overviews miss. WebNN is a <strong>W3C standard built specifically for ML inference</strong>. Instead of you hand-writing compute shaders, you describe a <em>graph</em> of neural-network ops and the browser routes it to the OS's native accelerator — <strong>DirectML</strong> (Windows), <strong>Core ML</strong> (Apple), <strong>NNAPI</strong> (Android), even NPUs.</p>
         <ul>
