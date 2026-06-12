@@ -4,6 +4,7 @@ import TransformersDemo from "../components/demos/runtimes/TransformersDemo";
 import TensorFlowDemo from "../components/demos/runtimes/TensorFlowDemo";
 import PyodideDemo from "../components/demos/runtimes/PyodideDemo";
 import MediaPipeDemo from "../components/demos/runtimes/MediaPipeDemo";
+import OnnxMnistDemo from "../components/demos/runtimes/OnnxMnistDemo";
 
 export default function Runtimes() {
   return (
@@ -40,6 +41,7 @@ export default function Runtimes() {
       <TensorFlowDemo />
       <PyodideDemo />
       <MediaPipeDemo />
+      <OnnxMnistDemo />
     </>
   );
 }
