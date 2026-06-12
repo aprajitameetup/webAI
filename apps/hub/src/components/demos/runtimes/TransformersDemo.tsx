@@ -20,12 +20,10 @@ export default function TransformersDemo() {
         setPhase("loading");
         setOutput("Loading model…");
         const { pipeline, env } = await import("@huggingface/transformers");
-        // No local models; in dev, route HF downloads through the /hf proxy to
-        // dodge the Xet CDN cross-origin CORS failure (same fix as WebLLM).
+        // No local models; route HF downloads through the same-origin /hf proxy (Vite
+        // in dev, Vercel edge function in prod) to dodge the Xet CDN CORS failure.
         env.allowLocalModels = false;
-        if (import.meta.env.DEV) {
-          (env as any).remoteHost = `${location.origin}/hf`;
-        }
+        (env as any).remoteHost = `${location.origin}/hf`;
         pipeRef.current = await pipeline("sentiment-analysis");
       }
       setPhase("running");

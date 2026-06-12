@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useLocalLLM } from "@webai/react";
 
 export default function ChatDemo() {
-  // In dev, route weight downloads through the Vite /hf proxy to dodge the HF Xet CDN
-  // cross-origin redirect CORS failure. (Prod on-device download needs an edge rewrite.)
+  // Route weight downloads through the same-origin /hf proxy (Vite proxy in dev, Vercel
+  // edge function in prod) to dodge the HF Xet CDN cross-origin redirect CORS failure.
+  // Dev keeps the default Llama-3.2-1B; prod uses a small model so it fits the edge proxy.
   const { status, progress, progressText, messages, source, error, send } = useLocalLLM({
     serverUrl: "/api/chat",
-    hfProxy: import.meta.env.DEV ? `${location.origin}/hf/` : undefined,
+    hfProxy: `${location.origin}/hf/`,
+    model: import.meta.env.DEV ? undefined : "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
   });
   const [input, setInput] = useState("");
   const busy = status === "streaming" || status === "loading" || status === "detecting";
