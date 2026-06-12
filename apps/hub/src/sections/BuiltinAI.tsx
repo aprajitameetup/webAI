@@ -1,4 +1,9 @@
 import React from "react";
+import BuiltinAIPanel from "../components/demos/builtin/BuiltinAIPanel";
+import PromptDemo from "../components/demos/builtin/PromptDemo";
+import SummarizerDemo from "../components/demos/builtin/SummarizerDemo";
+import TranslatorDemo from "../components/demos/builtin/TranslatorDemo";
+import LanguageDetectorDemo from "../components/demos/builtin/LanguageDetectorDemo";
 
 export default function BuiltinAI() {
   return (
@@ -21,12 +26,11 @@ export default function BuiltinAI() {
 <span class="tok-key">for await</span> (<span class="tok-key">const</span> chunk <span class="tok-key">of</span> session.<span class="tok-fn">promptStreaming</span>(text)) { … }</code></pre>
       ` }} />
 
-      <div className="demo">
-        <div className="demo-head">
-          <div className="title">✨ Live: is Built-in AI available here?</div>
-        </div>
-        <div className="demo-out">…demo coming in next task…</div>
-      </div>
+      <BuiltinAIPanel />
+      <PromptDemo />
+      <SummarizerDemo />
+      <TranslatorDemo />
+      <LanguageDetectorDemo />
 
       <div dangerouslySetInnerHTML={{ __html: `
         <div class="takeaway"><b>Why it matters:</b> zero-cost, private, offline, instant. The killer pattern is <b>hybrid</b> — try the on-device model first, escalate to a server model only when the task is too big. See the Patterns tab.</div>
