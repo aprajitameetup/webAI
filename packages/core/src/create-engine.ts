@@ -33,5 +33,9 @@ export async function createEngine(
   // Lazy-load the heavy WebLLM runtime only when the on-device path is chosen,
   // so server-only consumers never download it (and tests stay isolated).
   const { createLocalEngine } = await import("./engines/webllm");
-  return createLocalEngine({ model: opts.model, onProgress: opts.onProgress });
+  return createLocalEngine({
+    model: opts.model,
+    onProgress: opts.onProgress,
+    hfProxy: opts.hfProxy,
+  });
 }

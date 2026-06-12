@@ -1,8 +1,10 @@
 import React from "react";
+import ChatDemo from "../ChatDemo";
 
 export default function Runtimes() {
   return (
-    <div dangerouslySetInnerHTML={{ __html: `
+    <>
+      <div dangerouslySetInnerHTML={{ __html: `
       <div class="eyebrow">Layer 2 · The frameworks you actually use</div>
       <h1>Models &amp; Runtimes</h1>
       <p class="lead">You rarely touch WebGPU directly — you use a runtime that sits on top of it and falls back to Wasm. These are the libraries to know.</p>
@@ -28,5 +30,8 @@ export default function Runtimes() {
       </div>
       <div class="takeaway"><b>Pick by job:</b> embeddings/NLP → Transformers.js · chat LLM offline → WebLLM · arbitrary ONNX → ONNX Runtime Web · vision tasks → MediaPipe.</div>
     ` }} />
+
+      <ChatDemo />
+    </>
   );
 }

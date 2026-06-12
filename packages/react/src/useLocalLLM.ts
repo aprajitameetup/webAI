@@ -9,7 +9,7 @@ import {
 
 export type LLMStatus =
   | "detecting"
-  | "downloading"
+  | "loading"
   | "ready"
   | "streaming"
   | "error";
@@ -17,6 +17,7 @@ export type LLMStatus =
 export function useLocalLLM(opts: CreateEngineOptions = {}) {
   const [status, setStatus] = useState<LLMStatus>("detecting");
   const [progress, setProgress] = useState(0);
+  const [progressText, setProgressText] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [source, setSource] = useState<EngineSource | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -29,8 +30,9 @@ export function useLocalLLM(opts: CreateEngineOptions = {}) {
       ...opts,
       onProgress: (p) => {
         if (alive) {
-          setStatus("downloading");
-          setProgress(p);
+          setStatus("loading");
+          setProgress(p.progress);
+          setProgressText(p.text);
         }
       },
     })
@@ -79,5 +81,5 @@ export function useLocalLLM(opts: CreateEngineOptions = {}) {
     [messages]
   );
 
-  return { status, progress, messages, source, error, send };
+  return { status, progress, progressText, messages, source, error, send };
 }
