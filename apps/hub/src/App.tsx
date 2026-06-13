@@ -14,6 +14,7 @@ import Rag from "./sections/Rag";
 import Patterns from "./sections/Patterns";
 import Plan from "./sections/Plan";
 import Resources from "./sections/Resources";
+import Connect from "./sections/Connect";
 
 interface SectionMeta extends NavSection {
   Component: React.ComponentType;
@@ -34,6 +35,7 @@ const SECTIONS: SectionMeta[] = [
   { id: "patterns",     icon: "🏛️",  group: "Wrap up",    title: "Patterns & Architecture", Component: Patterns },
   { id: "plan",         icon: "📅",  group: "Wrap up",    title: "10-Day Plan",        Component: Plan },
   { id: "resources",    icon: "📚",  group: "Wrap up",    title: "Resources",          Component: Resources },
+  { id: "connect",      icon: "🔗",  group: "Wrap up",    title: "Connect",            Component: Connect },
 ];
 
 const navSections: NavSection[] = SECTIONS.map(({ id, icon, title, group }) => ({ id, icon, title, group }));
