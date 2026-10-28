@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useBuiltinSession } from "../../../hooks/useBuiltinSession";
+import { useBuiltinSession, buttonLabel } from "../../../hooks/useBuiltinSession";
 
 const UNAVAILABLE_NOTE =
   "Not available here. The Translator API needs Chrome/Edge with Built-in AI enabled and the language pack downloaded.";
@@ -34,7 +34,7 @@ export default function TranslatorDemo() {
     },
   });
 
-  const busy = state === "running" || state === "downloading";
+  const busy = state === "running" || state === "downloading" || state === "loading";
 
   return (
     <div className="demo">
@@ -45,7 +45,7 @@ export default function TranslatorDemo() {
           disabled={state === "unavailable" || busy || !input.trim()}
           onClick={() => run(input)}
         >
-          {state === "downloading" ? `Downloading… ${(progress * 100).toFixed(0)}%` : "Translate"}
+          {buttonLabel(state, progress, "Translate")}
         </button>
       </div>
       {state === "unavailable" ? (

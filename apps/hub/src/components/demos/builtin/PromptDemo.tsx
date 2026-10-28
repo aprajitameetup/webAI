@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useBuiltinSession } from "../../../hooks/useBuiltinSession";
+import { useBuiltinSession, buttonLabel } from "../../../hooks/useBuiltinSession";
 
 const UNAVAILABLE_NOTE =
   "Not available here. The Prompt API needs Chrome/Edge with Built-in AI enabled (chrome://flags → Prompt API for Gemini Nano) and the model downloaded.";
@@ -24,7 +24,7 @@ export default function PromptDemo() {
     },
   });
 
-  const busy = state === "running" || state === "downloading";
+  const busy = state === "running" || state === "downloading" || state === "loading";
 
   return (
     <div className="demo">
@@ -35,7 +35,7 @@ export default function PromptDemo() {
           disabled={state === "unavailable" || busy || !input.trim()}
           onClick={() => run(input)}
         >
-          {state === "downloading" ? `Downloading… ${(progress * 100).toFixed(0)}%` : "Prompt"}
+          {buttonLabel(state, progress, "Prompt")}
         </button>
       </div>
       {state === "unavailable" ? (

@@ -14,6 +14,14 @@ const CAP_META: Array<{ key: keyof ReturnType<typeof detectCapabilities>; name: 
   { key: "webcodecs",          name: "WebCodecs",               detail: "video/audio frames" },
   { key: "webaudio",           name: "Web Audio",               detail: "voice I/O" },
   { key: "builtinAI",          name: "Built-in AI (Prompt)",    detail: "Gemini Nano" },
+  { key: "summarizer",         name: "Summarizer API",          detail: "Gemini Nano, on device" },
+  { key: "translator",         name: "Translator API",          detail: "on-device translation" },
+  { key: "languageDetector",   name: "Language Detector API",   detail: "on-device detection" },
+  { key: "writer",             name: "Writer API",              detail: "built-in AI, experimental" },
+  { key: "rewriter",           name: "Rewriter API",            detail: "built-in AI, experimental" },
+  { key: "proofreader",        name: "Proofreader API",         detail: "built-in AI, experimental" },
+  { key: "wasmSimd",           name: "Wasm SIMD",               detail: "fast vector maths" },
+  { key: "webmcp",             name: "WebMCP",                  detail: "document.modelContext" },
 ];
 
 // These are detected separately from the detect.ts lib but we add them inline

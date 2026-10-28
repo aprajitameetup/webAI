@@ -11,9 +11,10 @@ interface NavProps {
   sections: NavSection[];
   current: string;
   onSelect: (id: string) => void;
+  collapsed?: boolean;
 }
 
-export default function Nav({ sections, current, onSelect }: NavProps) {
+export default function Nav({ sections, current, onSelect, collapsed = false }: NavProps) {
   let lastGroup = "";
 
   const items: React.ReactNode[] = [];
@@ -35,6 +36,7 @@ export default function Nav({ sections, current, onSelect }: NavProps) {
         key={s.id}
         className={`nav-item${isActive ? " active" : ""}`}
         onClick={() => onSelect(s.id)}
+        title={collapsed ? s.title : undefined}
       >
         <div className="ico">{s.icon}</div>
         <span>{s.title}</span>
@@ -42,5 +44,9 @@ export default function Nav({ sections, current, onSelect }: NavProps) {
     );
   });
 
-  return <nav className="nav">{items}</nav>;
+  return (
+    <nav id="site-nav" className={`nav${collapsed ? " collapsed" : ""}`} aria-label="Sections">
+      {items}
+    </nav>
+  );
 }

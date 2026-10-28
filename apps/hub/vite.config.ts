@@ -37,6 +37,15 @@ export default defineConfig({
         followRedirects: true,
         rewrite: (path) => path.replace(/^\/gstorage/, ""),
       },
+      // TFHub-hosted models (e.g. MobileNet via @tensorflow-models/mobilenet) are
+      // fetched from tfhub.dev, which redirects cross-origin and gets blocked by
+      // our COEP header; proxy it same-origin like the other CDNs above.
+      "/tfhub": {
+        target: "https://tfhub.dev",
+        changeOrigin: true,
+        followRedirects: true,
+        rewrite: (path) => path.replace(/^\/tfhub/, ""),
+      },
     },
   },
 });

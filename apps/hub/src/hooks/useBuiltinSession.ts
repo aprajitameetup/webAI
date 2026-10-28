@@ -6,8 +6,16 @@ export type SessionState =
   | "unavailable"
   | "ready"
   | "downloading"
+  | "loading"
   | "running"
   | "error";
+
+/** Button text while a session is being set up. "downloading" means bytes are really coming in. */
+export function buttonLabel(state: SessionState, progress: number, idle: string): string {
+  if (state === "downloading") return `Downloading… ${(progress * 100).toFixed(0)}%`;
+  if (state === "loading") return "Loading model…";
+  return idle;
+}
 
 export interface BuiltinSessionConfig<S, I> {
   /** Resolve the API's raw availability value (or throw / be absent → unavailable). */
@@ -54,7 +62,11 @@ export function useBuiltinSession<S, I>(cfg: BuiltinSessionConfig<S, I>) {
       setError(null);
       try {
         if (!sessionRef.current) {
-          setState("downloading");
+          // a model that is already on disk is only loaded, not downloaded
+          const raw = await Promise.resolve()
+            .then(() => cfg.availability())
+            .catch(() => "unavailable");
+          setState(normalizeAvailability(raw) === "available" ? "loading" : "downloading");
           setProgress(0);
           sessionRef.current = await cfg.create((p) => setProgress(p));
         }

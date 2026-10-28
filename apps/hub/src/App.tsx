@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Nav, { NavSection } from "./components/Nav";
 import TheStack from "./sections/TheStack";
 import Overview from "./sections/Overview";
@@ -11,6 +11,10 @@ import Storage from "./sections/Storage";
 import Concurrency from "./sections/Concurrency";
 import Multimodal from "./sections/Multimodal";
 import Rag from "./sections/Rag";
+import BeMyEyes from "./sections/BeMyEyes";
+import TokenSavings from "./sections/TokenSavings";
+import WebMcp from "./sections/WebMcp";
+import ConsoleLive from "./sections/ConsoleLive";
 import Patterns from "./sections/Patterns";
 import Plan from "./sections/Plan";
 import Resources from "./sections/Resources";
@@ -32,6 +36,10 @@ const SECTIONS: SectionMeta[] = [
   { id: "concurrency",  icon: "🧵",  group: "The Stack",  title: "Concurrency",        Component: Concurrency },
   { id: "multimodal",   icon: "🎬",  group: "The Stack",  title: "Multimodal I/O",     Component: Multimodal },
   { id: "rag",          icon: "🔎",  group: "The Stack",  title: "In-browser RAG",     Component: Rag },
+  { id: "be-my-eyes",   icon: "👁️",  group: "The Stack",  title: "AI, Be My Eyes",     Component: BeMyEyes },
+  { id: "token-savings", icon: "🪙", group: "The Stack",  title: "Token Savings",      Component: TokenSavings },
+  { id: "webmcp",        icon: "🧰", group: "The Stack",  title: "WebMCP registerTool", Component: WebMcp },
+  { id: "console",       icon: "⌨️", group: "The Stack",  title: "Console demo",       Component: ConsoleLive },
   { id: "patterns",     icon: "🏛️",  group: "Wrap up",    title: "Patterns & Architecture", Component: Patterns },
   { id: "plan",         icon: "📅",  group: "Wrap up",    title: "10-Day Plan",        Component: Plan },
   { id: "resources",    icon: "📚",  group: "Wrap up",    title: "Resources",          Component: Resources },
@@ -42,6 +50,21 @@ const navSections: NavSection[] = SECTIONS.map(({ id, icon, title, group }) => (
 
 export default function App() {
   const [current, setCurrent] = useState("overview");
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("navCollapsed") === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("navCollapsed", collapsed ? "1" : "0");
+    } catch {
+      /* storage can be blocked */
+    }
+  }, [collapsed]);
 
   const active = SECTIONS.find((s) => s.id === current) ?? SECTIONS[0];
   const { Component } = active;
@@ -49,12 +72,19 @@ export default function App() {
   return (
     <>
       <div className="topbar">
+        <button
+          className="nav-toggle"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-expanded={!collapsed}
+          aria-controls="site-nav"
+          onClick={() => setCollapsed((c) => !c)}
+        >
+          <span aria-hidden="true">{collapsed ? "»" : "«"}</span>
+        </button>
         <div className="brand">
           <div className="logo">⚡</div>
           <div>
             The New Web AI Stack
-            <br />
-            <small>React Delhi · Learning Hub</small>
           </div>
         </div>
         <div className="topbar-right">
@@ -66,7 +96,7 @@ export default function App() {
       </div>
 
       <div className="layout">
-        <Nav sections={navSections} current={current} onSelect={setCurrent} />
+        <Nav sections={navSections} current={current} onSelect={setCurrent} collapsed={collapsed} />
         <main className="content">
           <div className="page active">
             <Component />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useBuiltinSession } from "../../../hooks/useBuiltinSession";
+import { useBuiltinSession, buttonLabel } from "../../../hooks/useBuiltinSession";
 
 const UNAVAILABLE_NOTE =
   "Not available here. The Language Detector API needs Chrome/Edge with Built-in AI enabled and the model downloaded.";
@@ -25,7 +25,7 @@ export default function LanguageDetectorDemo() {
     },
   });
 
-  const busy = state === "running" || state === "downloading";
+  const busy = state === "running" || state === "downloading" || state === "loading";
 
   return (
     <div className="demo">
@@ -36,7 +36,7 @@ export default function LanguageDetectorDemo() {
           disabled={state === "unavailable" || busy || !input.trim()}
           onClick={() => run(input)}
         >
-          {state === "downloading" ? `Downloading… ${(progress * 100).toFixed(0)}%` : "Detect"}
+          {buttonLabel(state, progress, "Detect")}
         </button>
       </div>
       {state === "unavailable" ? (
