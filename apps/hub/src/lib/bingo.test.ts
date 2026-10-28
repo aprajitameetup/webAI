@@ -8,11 +8,11 @@ const tiles: BingoTile[] = [
 ];
 
 describe("bingoScore", () => {
-  it("gives one point per known tile plus one per green tile", () => {
-    expect(bingoScore(tiles, ["a", "b"])).toEqual({ known: 2, green: 2, total: 3, points: 4 });
+  it("gives one point per tile the player knows", () => {
+    expect(bingoScore(tiles, ["a", "b"])).toEqual({ known: 2, total: 3, points: 2 });
   });
-  it("starts at the green count when nothing is known", () => {
-    expect(bingoScore(tiles, []).points).toBe(2);
+  it("starts at zero and ignores which tiles are green", () => {
+    expect(bingoScore(tiles, []).points).toBe(0);
   });
   it("ignores ids that are not tiles", () => {
     expect(bingoScore(tiles, ["zzz"]).known).toBe(0);

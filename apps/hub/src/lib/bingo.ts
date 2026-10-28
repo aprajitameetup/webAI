@@ -7,17 +7,15 @@ export interface BingoTile {
 
 export interface BingoScore {
   known: number;
-  green: number;
   total: number;
+  /** One point for every tile the player says they know. Nothing else counts. */
   points: number;
 }
 
-/** One point for every tile the player knows, plus one for every tile that is green in their browser. */
 export function bingoScore(tiles: BingoTile[], known: string[]): BingoScore {
   const knownSet = new Set(known);
   const knownCount = tiles.filter((t) => knownSet.has(t.id)).length;
-  const green = tiles.filter((t) => t.ok).length;
-  return { known: knownCount, green, total: tiles.length, points: knownCount + green };
+  return { known: knownCount, total: tiles.length, points: knownCount };
 }
 
 export function toggleKnown(known: string[], id: string): string[] {

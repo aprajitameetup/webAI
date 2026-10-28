@@ -24,16 +24,15 @@ export default function Bingo() {
       <div className="eyebrow">The game</div>
       <h1>Bingo</h1>
       <p className="lead">
-        Every tile is a real check on <em>your</em> browser. Green means it works for you. Tick every tile you have
-        used or at least heard of. You score one point for each tick and one for each green tile.
+        How much of the web AI stack do you already know? Tick every tile you have used or at least heard of. One
+        point for each tick. The green and red marks show what your own browser supports.
       </p>
 
       <div className="bingo-score" role="status" aria-live="polite">
         <div className="bingo-points">{score.points}</div>
         <div className="bingo-break">
           <strong>points</strong>
-          <span>{score.known} of {score.total} known</span>
-          <span>{score.green} of {score.total} green</span>
+          <span>{score.known} of {score.total} tiles known</span>
         </div>
         <button type="button" className="bingo-reset" onClick={() => setKnown([])} disabled={known.length === 0}>
           Reset ticks
