@@ -1,7 +1,7 @@
 import React from "react";
 import { detectCapabilities } from "../lib/detect";
 
-const CAP_META: Array<{ key: keyof ReturnType<typeof detectCapabilities>; name: string; detail: string }> = [
+export const CAP_META: Array<{ key: keyof ReturnType<typeof detectCapabilities>; name: string; detail: string }> = [
   { key: "webgpu",             name: "WebGPU",                  detail: "navigator.gpu" },
   { key: "webnn",              name: "WebNN",                   detail: "navigator.ml" },
   { key: "wasm",               name: "WebAssembly",             detail: "core Wasm" },
@@ -25,7 +25,7 @@ const CAP_META: Array<{ key: keyof ReturnType<typeof detectCapabilities>; name: 
 ];
 
 // These are detected separately from the detect.ts lib but we add them inline
-const EXTRA_CAPS: Array<{ name: string; detail: string; value: boolean }> = [
+export const EXTRA_CAPS: Array<{ name: string; detail: string; value: boolean }> = [
   {
     name: "SharedArrayBuffer",
     detail: "needs COOP/COEP",

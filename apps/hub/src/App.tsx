@@ -3,6 +3,7 @@ import Nav, { NavSection } from "./components/Nav";
 import TheStack from "./sections/TheStack";
 import Overview from "./sections/Overview";
 import Capabilities from "./sections/Capabilities";
+import Bingo from "./sections/Bingo";
 import Compute from "./sections/Compute";
 import Runtimes from "./sections/Runtimes";
 import BuiltinAI from "./sections/BuiltinAI";
@@ -28,6 +29,7 @@ const SECTIONS: SectionMeta[] = [
   { id: "the-stack",    icon: "🧱",  group: "Start here", title: "The Stack",          Component: TheStack },
   { id: "overview",     icon: "🗺️",  group: "Start here", title: "Overview",           Component: Overview },
   { id: "capabilities", icon: "🔬",  group: "Start here", title: "Live Capabilities",  Component: Capabilities },
+  { id: "bingo",        icon: "🎯",  group: "Start here", title: "Bingo",              Component: Bingo },
   { id: "compute",      icon: "🧮",  group: "The Stack",  title: "Compute",            Component: Compute },
   { id: "runtimes",     icon: "📦",  group: "The Stack",  title: "Models & Runtimes",  Component: Runtimes },
   { id: "builtin",      icon: "✨",  group: "The Stack",  title: "Built-in AI",        Component: BuiltinAI },
