@@ -49,7 +49,11 @@ const SECTIONS: SectionMeta[] = [
 const navSections: NavSection[] = SECTIONS.map(({ id, icon, title, group }) => ({ id, icon, title, group }));
 
 export default function App() {
-  const [current, setCurrent] = useState("overview");
+  // A link ending in #capabilities (any section id) opens that section directly.
+  const [current, setCurrent] = useState(() => {
+    const id = window.location.hash.slice(1);
+    return SECTIONS.some((s) => s.id === id) ? id : "overview";
+  });
   const [collapsed, setCollapsed] = useState(() => {
     try {
       return localStorage.getItem("navCollapsed") === "1";
