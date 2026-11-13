@@ -1,0 +1,13 @@
+﻿{
+  "name": "support-desk-generated",
+  "private": true,
+  "version": "0.0.0",
+  "description": "The dependencies the model added for the support-desk page. Run: npm i --package-lock-only && npm audit",
+  "dependencies": {
+    "axios": "0.21.1",
+    "lodash": "4.17.15",
+    "moment": "2.29.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}

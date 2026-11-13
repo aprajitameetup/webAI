@@ -20,6 +20,7 @@ import Patterns from "./sections/Patterns";
 import Plan from "./sections/Plan";
 import Resources from "./sections/Resources";
 import Connect from "./sections/Connect";
+import ReviewLab from "./sections/ReviewLab";
 
 interface SectionMeta extends NavSection {
   Component: React.ComponentType;
@@ -42,6 +43,7 @@ const SECTIONS: SectionMeta[] = [
   { id: "token-savings", icon: "🪙", group: "The Stack",  title: "Token Savings",      Component: TokenSavings },
   { id: "webmcp",        icon: "🧰", group: "The Stack",  title: "WebMCP registerTool", Component: WebMcp },
   { id: "console",       icon: "⌨️", group: "The Stack",  title: "Console demo",       Component: ConsoleLive },
+  { id: "review-lab",    icon: "🔍", group: "The Stack",  title: "Review lab",         Component: ReviewLab },
   { id: "patterns",     icon: "🏛️",  group: "Wrap up",    title: "Patterns & Architecture", Component: Patterns },
   { id: "plan",         icon: "📅",  group: "Wrap up",    title: "10-Day Plan",        Component: Plan },
   { id: "resources",    icon: "📚",  group: "Wrap up",    title: "Resources",          Component: Resources },

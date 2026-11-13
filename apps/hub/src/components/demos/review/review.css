@@ -1,0 +1,112 @@
+/* Review Lab: the support-desk page, in its "generated" and "reviewed" versions.
+   Dark theme. Everything is scoped under .rl-root so nothing leaks into the hub. */
+
+.rl-root {
+  --rl-bg: #0b1020;
+  --rl-card: #121a2e;
+  --rl-raised: #18223b;
+  --rl-border: #26314d;
+  --rl-text: #e6ecf7;
+  --rl-field: #0e1527;
+  --rl-accent: #5b7cfa;
+
+  background: var(--rl-bg);
+  color: var(--rl-text);
+  color-scheme: dark;
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  min-height: 100%;
+  container-type: inline-size;
+  text-align: left;
+}
+.rl-root *, .rl-root *::before, .rl-root *::after { box-sizing: border-box; }
+.rl-bare { min-height: 100vh; }
+
+/* The hub styles bare elements (gradient h1, flex h2, light p). Reset them so the page under review is its own page. */
+.rl-root h1, .rl-root h2, .rl-root h3, .rl-root h4 {
+  background: none; -webkit-text-fill-color: currentColor; display: block; gap: 0;
+  color: inherit; letter-spacing: normal; line-height: 1.25; margin: 0; font-weight: 700;
+}
+.rl-root p { color: inherit; font-size: inherit; line-height: inherit; margin: 0 0 8px; }
+.rl-root a { color: #8fb0ff; text-decoration: underline; }
+
+.rl-container { margin: 0 auto; padding: 24px 0 64px; }
+.rl-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.rl-topbar h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+.rl-topbar-right { display: flex; align-items: center; gap: 14px; }
+.rl-icon-btn { cursor: pointer; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: var(--rl-card); border: 1px solid var(--rl-border); padding: 0; color: var(--rl-text); }
+.rl-btn {
+  cursor: pointer; background: var(--rl-accent); color: #fff; padding: 10px 18px; border-radius: 10px; border: 0;
+  font: inherit; font-weight: 600; user-select: none; display: inline-block;
+}
+.rl-btn.rl-small { padding: 7px 14px; margin-top: 8px; }
+.rl-btn.rl-ghost { background: var(--rl-raised); color: #cbd5e8; border: 1px solid var(--rl-border); }
+.rl-banner { width: 100%; display: block; border-radius: 14px; margin-bottom: 18px; }
+.rl-filters { display: flex; gap: 12px; margin-bottom: 14px; }
+.rl-field { padding: 10px 12px; border: 1px solid var(--rl-border); border-radius: 10px; font: inherit; background: var(--rl-field); outline: none; color: var(--rl-text); width: 100%; }
+.rl-filters .rl-search { width: 380px; }
+.rl-filters .rl-select { width: 160px; }
+.rl-card { background: var(--rl-card); border: 1px solid var(--rl-border); border-radius: 14px; }
+.rl-side { padding: 18px; }
+.rl-side h4, .rl-side h2 { margin: 14px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: #8b9ab8; font-weight: 700; }
+.rl-reply { margin-top: 12px; }
+.rl-overlay { position: fixed; inset: 0; background: rgba(2, 6, 16, .65); display: grid; place-items: center; z-index: 50; }
+.rl-modal { background: var(--rl-card); border: 1px solid var(--rl-border); border-radius: 16px; padding: 22px; width: 420px; max-width: 94vw; display: grid; gap: 12px; }
+.rl-modal h3 { margin: 0 0 4px; }
+.rl-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+.rl-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.rl-dot.open { background: #f87171; }
+.rl-dot.pending { background: #fbbf24; }
+.rl-dot.closed { background: #4ade80; }
+
+/* ---------------- Generated page: the flaws, as written ---------------- */
+.rl-before .rl-container { width: 1200px; }
+.rl-before .rl-layout { display: grid; grid-template-columns: 820px 360px; gap: 20px; align-items: start; }
+.rl-before .rl-table { min-width: 820px; overflow: hidden; }
+.rl-before .rl-row {
+  display: grid; grid-template-columns: 70px 1fr 150px 70px 80px 110px 60px; gap: 10px; padding: 12px 16px;
+  border-top: 1px solid var(--rl-border); align-items: center; cursor: pointer;
+}
+.rl-before .rl-row.rl-head { background: var(--rl-raised); font-weight: 600; color: #8b9ab8; border-top: 0; cursor: default; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.rl-before .rl-row:not(.rl-head):hover { background: var(--rl-raised); }
+.rl-before .rl-muted { color: #4a5873; }
+.rl-before .rl-link { color: #4b5f9e; }
+.rl-before .rl-btn { background: #6d86f2; }
+
+/* ---------------- Reviewed page: the fixes ---------------- */
+.rl-after .rl-container { width: min(1200px, 100%); padding-inline: 16px; }
+.rl-after .rl-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+.rl-after :focus-visible { outline: 3px solid #93b4ff; outline-offset: 2px; }
+.rl-after .rl-btn { background: #3b5bdb; min-height: 40px; }
+.rl-after .rl-btn.rl-ghost { background: var(--rl-raised); }
+.rl-after .rl-btn:disabled { opacity: .55; cursor: not-allowed; }
+.rl-after .rl-icon-btn { width: 44px; height: 44px; }
+.rl-after .rl-table-wrap { overflow-x: auto; }
+.rl-after table { width: 100%; border-collapse: collapse; }
+.rl-after caption { text-align: left; padding: 14px 16px 4px; font-weight: 700; }
+.rl-after th, .rl-after td { padding: 10px 16px; text-align: left; border-top: 1px solid var(--rl-border); vertical-align: middle; }
+.rl-after thead th { background: var(--rl-raised); color: #aab8d2; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; border-top: 0; }
+.rl-after .rl-muted { color: #9fb0cc; }
+.rl-after .rl-link-btn { background: none; border: 0; color: #8fb0ff; font: inherit; cursor: pointer; padding: 6px 4px; min-height: 32px; text-decoration: underline; }
+.rl-after .rl-status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.rl-after .rl-status svg { flex: none; }
+.rl-after .rl-pager { display: flex; gap: 8px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--rl-border); }
+.rl-after .rl-notice { padding: 28px 16px; text-align: center; color: #cbd5e8; }
+.rl-after .rl-notice .rl-btn { margin-top: 10px; }
+.rl-after dialog { background: var(--rl-card); color: var(--rl-text); border: 1px solid var(--rl-border); border-radius: 16px; padding: 22px; width: 420px; max-width: 94vw; }
+.rl-after dialog::backdrop { background: rgba(2, 6, 16, .65); }
+.rl-after dialog form { display: grid; gap: 12px; }
+.rl-after label { font-weight: 600; display: grid; gap: 4px; }
+.rl-after .rl-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.rl-after .rl-tickets { min-height: 1180px; } /* hold the list's height while it loads, so the page does not jump */
+.rl-after .rl-skeleton { height: 14px; border-radius: 6px; background: linear-gradient(90deg, #18223b, #223052, #18223b); background-size: 200% 100%; animation: rl-shimmer 1.4s linear infinite; margin: 14px 16px; }
+@keyframes rl-shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .rl-after .rl-skeleton { animation: none; } }
+
+@container (max-width: 820px) {
+  .rl-after .rl-layout { grid-template-columns: 1fr; }
+  .rl-after .rl-filters { flex-direction: column; }
+  .rl-after .rl-filters .rl-search, .rl-after .rl-filters .rl-select { width: 100%; }
+  .rl-after .rl-hide-sm { display: none; }
+}
