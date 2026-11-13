@@ -4,11 +4,11 @@ import { normalizeAvailability } from "../../lib/builtinAI";
 const CONFIDENCE_THRESHOLD = 0.35;
 const TICK_MS = 1800;
 const LOG_LIMIT = 5;
-// mobilenet.load()'s default fetches from tfhub.dev (via loadGraphModel's fromTFHub
-// transform: <url>/model.json?tfjs-format=file), which isn't proxied and gets blocked
-// by this app's COEP header. Build that same URL ourselves through the /tfhub proxy.
-const MOBILENET_MODEL_URL =
-  `${location.origin}/tfhub/google/imagenet/mobilenet_v1_100_224/classification/1/model.json?tfjs-format=file`;
+// mobilenet.load()'s default fetches from tfhub.dev, which redirects cross-origin and gets
+// blocked by this app's COEP header. The same model files (MobileNet v1 1.0, 224) are
+// served from this site's own public/models folder instead, so they load the same way in
+// development and on any static host, with no proxy or server function involved.
+const MOBILENET_MODEL_URL = `${location.origin}${import.meta.env.BASE_URL}models/mobilenet_v1_100_224/model.json`;
 
 type GeminiState = "probing" | "available" | "unavailable";
 type Phase = "idle" | "loading-model" | "watching" | "speaking";
